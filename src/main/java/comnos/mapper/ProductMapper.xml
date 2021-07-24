@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="comnos.mapper.ProductMapper">
+
+	<select id="getListWithPaging" resultType="comnos.domain.ProductVO">
+	    SELECT 
+			PRODUCT_NO PRODUCT_NO, 
+			PRODUCT_NAME PRODUCT_NAME, 
+			PRODUCT_TYPE PRODUCT_TYPE, 
+			PRODUCT_IN_PRICE PRODUCT_IN_PRICE, 
+			PRODUCT_OUT_PRICE PRODUCT_OUT_PRICE, 
+			PRODUCT_DETAIL PRODUCT_DETAIL
+	    FROM PRODUCT
+	    WHERE
+	    	PRODUCT_TYPE LIKE #{type}
+	    AND 
+	    	PRODUCT_NO LIKE CONCAT ('%', #{keyword1}, '%')
+	    AND
+	    	PRODUCT_NAME LIKE CONCAT ('%', #{keyword2}, '%')
+		LIMIT #{form}, #{amount}
+	     
+	</select>
+
+
+	<select id="getList" resultType="comnos.domain.ProductVO">
+	
+		SELECT
+			PRODUCT_NO PRODUCT_NO, 
+			PRODUCT_NAME PRODUCT_NAME, 
+			PRODUCT_TYPE PRODUCT_TYPE, 
+			PRODUCT_IN_PRICE PRODUCT_IN_PRICE, 
+			PRODUCT_OUT_PRICE PRODUCT_OUT_PRICE, 
+			PRODUCT_DETAIL PRODUCT_DETAIL
+		FROM PRODUCT 
+		ORDER BY PRODUCT_NAME ASC
+	</select>
+
+	<select id="getTypeList" resultType="comnos.domain.ProductVO">
+	
+		SELECT DISTINCT
+			PRODUCT_TYPE PRODUCT_TYPE 
+		FROM PRODUCT
+		ORDER BY PRODUCT_TYPE ASC 
+	</select>
+
+	<insert id="insert">
+		INSERT INTO PRODUCT ( 
+			PRODUCT_NO, 
+			PRODUCT_NAME, PRODUCT_TYPE, 
+			PRODUCT_IN_PRICE, PRODUCT_OUT_PRICE, 
+			PRODUCT_DETAIL) 
+		VALUES ( 
+			#{PRODUCT_NO},  
+			#{PRODUCT_NAME}, #{PRODUCT_TYPE}, 
+			#{PRODUCT_IN_PRICE}, #{PRODUCT_OUT_PRICE}, 
+			#{PRODUCT_DETAIL})
+	</insert>
+	
+	<select id="read" resultType="comnos.domain.ProductVO">
+		SELECT 
+			P.PRODUCT_NAME PRODUCT_NAME, 
+			P.PRODUCT_TYPE PRODUCT_TYPE, 
+			P.PRODUCT_IN_PRICE PRODUCT_IN_PRICE, 
+			P.PRODUCT_OUT_PRICE PRODUCT_OUT_PRICE, 
+			P.PRODUCT_DETAIL PRODUCT_DETAIL, 
+			F.FILENAME FILENAME 
+		FROM PRODUCT P LEFT JOIN PRODUCT_FILE F ON P.PRODUCT_NO = F.PRODUCT_NO
+		WHERE P.PRODUCT_NO = #{PRODUCT_NO}			
+	</select>
+	
+	<update id="update">
+		UPDATE PRODUCT
+		SET
+			PRODUCT_NO = #{PRODUCT_NO}, 
+			PRODUCT_NAME = #{PRODUCT_NAME}, 
+			PRODUCT_TYPE = #{PRODUCT_TYPE}, 
+			PRODUCT_IN_PRICE = #{PRODUCT_IN_PRICE}, 
+			PRODUCT_OUT_PRICE = #{PRODUCT_OUT_PRICE}, 
+			PRODUCT_DETAIL = #{PRODUCT_DETAIL}, 
+		WHERE
+			PRODUCT_NO = #{PRODUCT_NO}	
+	</update>
+	
+	<delete id="delete">
+		DELETE FROM PRODUCT WHERE PRODUCT_NO = #{PRODUCT_NO}
+	</delete>
+	
+</mapper>

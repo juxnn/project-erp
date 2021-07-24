@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="comnos.mapper.StoreOrderMapper">
+	
+	<select id="getList" resultType="comnos.domain.OrderVO">	
+		SELECT DISTINCT
+			STORE_ORDER_NO ORDER_NO, 
+			STORE_NO STORE_NO, 
+			STORE_ORDER_DATE ORDER_DATE,
+			PRODUCT_NO PRODUCT_NO,
+			STORE_ORDER_EA ORDER_EA,
+			STORE_ORDER_STATUS ORDER_STATUS, 
+			EMP_CODE EMP_CODE
+		FROM STORE_ORDER 
+		ORDER BY STORE_ORDER_DATE ASC
+	</select>
+	
+	<select id="getListWithPaging" resultType="comnos.domain.OrderVO">	
+		SELECT DISTINCT
+			STORE_ORDER_NO ORDER_NO, 
+			STORE_NO STORE_NO, 
+			STORE_ORDER_DATE ORDER_DATE,
+			STORE_ORDER_STATUS ORDER_STATUS, 
+			EMP_CODE EMP_CODE
+		FROM STORE_ORDER 
+		WHERE STORE_ORDER_STATUS LIKE #{type}
+		ORDER BY STORE_ORDER_DATE ASC
+	</select>
+	
+	<select id="getOrderList" resultType="comnos.domain.OrderVO">	
+		SELECT DISTINCT
+			STORE_ORDER_NO ORDER_NO, 
+			STORE_NO STORE_NO, 
+			STORE_ORDER_DATE ORDER_DATE,
+			STORE_ORDER_STATUS ORDER_STATUS, 
+			EMP_CODE EMP_CODE
+		FROM STORE_ORDER 
+		ORDER BY STORE_ORDER_DATE ASC
+	</select>
+	
+	
+	<select id="getOrderDetail" resultType="comnos.domain.OrderVO">
+		SELECT DISTINCT
+			STORE_ORDER_NO ORDER_NO, 
+			STORE_ORDER_DATE ORDER_DATE,
+			STORE_NO STORE_NO, 
+			PRODUCT_NO PRODUCT_NO,
+			STORE_ORDER_EA ORDER_EA,
+			STORE_ORDER_STATUS ORDER_STATUS, 
+			EMP_CODE EMP_CODE
+		FROM STORE_ORDER 
+		WHERE STORE_ORDER_NO = #{ORDER_NO}
+		ORDER BY STORE_ORDER_DATE ASC	
+	</select>
+	
+		<insert id="insert">
+		INSERT INTO STORE_ORDER ( 
+			STORE_ORDER_NO,
+			STORE_NO, 
+			PRODUCT_NO, 
+			STORE_ORDER_EA, 
+			STORE_ORDER_STATUS, 
+			EMP_CODE) 
+		VALUES ( 
+			#{ORDER_NO},
+			#{STORE_NO}, 
+			#{PRODUCT_NO}, 
+			#{ORDER_EA}, 
+			#{ORDER_STATUS},  
+			#{EMP_CODE})
+	</insert>
+	
+	<update id="statusUpdate">
+		UPDATE STORE_ORDER
+		SET
+			STORE_ORDER_STATUS = #{ORDER_STATUS}
+		WHERE
+			STORE_ORDER_NO = #{ORDER_NO}
+	</update>
+
+	<select id="checkOrderNo" resultType="Integer">
+		SELECT EXISTS
+			( SELECT * FROM STORE_ORDER
+			  WHERE STORE_ORDER_NO = #{ORDER_NO})
+		as isChk;
+	</select>
+
+
+
+</mapper>

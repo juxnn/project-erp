@@ -11,7 +11,7 @@
   </listener>
   
   <listener>
-  	<listener-class>org.zerock.listener.AppListener</listener-class>
+  	<listener-class>comnos.listener.AppListener</listener-class>
   </listener>
   
   <servlet>

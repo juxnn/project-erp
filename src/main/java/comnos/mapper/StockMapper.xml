@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+  <mapper namespace="comnos.mapper.StockMapper">
+  
+  
+  	<select id="getList" resultType="comnos.domain.StockVO">
+		SELECT
+			STORE_NO STORE_NO, 
+			PRODUCT_NO PRODUCT_NO, 
+			STORE_STOCK_EA STORE_STOCK_EA
+		FROM STORE_STOCK
+		ORDER BY STORE_NO ASC
+	</select>
+	
+	<select id="getListTest" resultType="comnos.domain.StockVO">
+		SELECT
+			s.STORE_NO STORE_NO, 
+			s.PRODUCT_NO PRODUCT_NO, 
+			p.PRODUCT_NAME PRODUCT_NAME
+			s.STORE_STOCK_EA STORE_STOCK_EA
+		FROM STORE_STOCK s LEFT JOIN PRODUCT p ON s.PRODUCT_NO = p.PRODUCT_NO 
+		WHERE s.STORE_NO = #{type2}
+		ORDER BY STORE_NO ASC
+	</select>
+	
+	<select id="getListWithPaging" resultType="comnos.domain.StockVO">	
+		SELECT
+			s.STORE_NO STORE_NO, 
+			s.PRODUCT_NO PRODUCT_NO, 
+			p.PRODUCT_NAME PRODUCT_NAME,
+			s.STORE_STOCK_EA STORE_STOCK_EA
+		FROM STORE_STOCK s LEFT JOIN PRODUCT p ON s.PRODUCT_NO = p.PRODUCT_NO 
+		WHERE s.STORE_NO = #{type2} AND PRODUCT_TYPE LIKE #{type}
+		AND 
+	    	s.PRODUCT_NO LIKE CONCAT ('%', #{keyword1}, '%')
+	    AND
+	    	p.PRODUCT_NAME LIKE CONCAT ('%', #{keyword2}, '%')
+		ORDER BY s.PRODUCT_NO ASC
+	</select>
+	
+	
+	
+	<select id="exist">
+		SELECT PRODUCT_NO
+		FROM STORE_STOCK
+		WHERE PRODUCT_NO = #{PRODUCT_NO}
+	</select>
+	
+	<select id="countEA" resultType="int">
+		SELECT STORE_STOCK_EA
+		FROM STORE_STOCK
+		WHERE PRODUCT_NO = #{PRODUCT_NO}
+		AND STORE_NO = #{STORE_NO}
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO STORE_STOCK ( 
+			STORE_NO, 
+			PRODUCT_NO, 
+			STORE_STOCK_EA)
+		VALUES ( 
+			#{STORE_NO},   
+			#{PRODUCT_NO}, 
+			#{STORE_STOCK_EA})
+	</insert>
+	
+	<update id="update">
+		UPDATE STORE_STOCK
+		SET 
+			STORE_STOCK_EA = #{STORE_STOCK_EA}
+		WHERE
+			STORE_NO = #{STORE_NO}
+		AND
+			PRODUCT_NO = #{PRODUCT_NO}	
+	</update>
+  
+  
+  </mapper>

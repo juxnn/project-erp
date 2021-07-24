@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+  <mapper namespace="comnos.mapper.StoreMapper">
+  
+  
+	<select id="getList" resultType="comnos.domain.StoreVO">
+		SELECT
+			STORE_NO STORE_NO, 
+			STORE_NAME STORE_NAME, 
+			STORE_ADDRESS STORE_ADDRESS,  
+			STORE_PHONE STORE_PHONE 
+		FROM STORE
+		ORDER BY STORE_NO ASC
+	</select>
+  
+ 	<insert id="insert">
+		INSERT INTO STORE ( 
+			STORE_NO, 
+			STORE_NAME, 
+			STORE_ADDRESS, 
+			STORE_PHONE) 
+		VALUES ( 
+			#{STORE_NO},   
+			#{STORE_NAME}, 
+			#{STORE_ADDRESS},  
+			#{STORE_PHONE})
+	</insert>
+	
+	<select id="read" resultType="comnos.domain.StoreVO">
+		SELECT 
+			STORE_NAME STORE_NAME, 
+			STORE_ADDRESS STORE_ADDRESS, 
+			STORE_PHONE STORE_PHONE 
+		FROM STORE WHERE STORE_NO = #{STORE_NO}			
+	</select>
+  
+  
+  	<update id="update">
+		UPDATE STORE
+		SET
+			STORE_NO = #{STORE_NO}, 
+			STORE_NAME = #{STORE_NAME}, 
+			STORE_ADDRESS = #{STORE_ADDRESS}, 
+			STORE_PHONE = #{STORE_PHONE}  
+		WHERE
+			STORE_NO = #{STORE_NO}	
+	</update>
+	
+	<delete id="delete">
+		DELETE FROM STORE WHERE STORE_NO = #{STORE_NO}
+	</delete>
+  </mapper>

@@ -5,16 +5,37 @@
 	xsi:schemaLocation="http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security.xsd
 		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-<security:http>
-	<security:http-basic/>
-</security:http>
+	<bean id="bcryptPasswordEncoder" 
+	class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder" />
 
-<security:authentication-manager>
-	<security:authentication-provider>
-		<security:user-service>
-			<security:user name="member" password="{noop}member" authorities="ROLE_MEMBER"/>
-		</security:user-service>
-	</security:authentication-provider>
-</security:authentication-manager>
+	<bean id="customUserDetailsService"
+	class="comnos.security.CustomUserDetailsService"></bean>
 
+	<security:http>
+<!-- 	
+ 		<security:intercept-url pattern="/employee/register" access="hasRole('ROLE_GM')"/>
+ -->	
+ 		<security:form-login login-page="/employee/login" default-target-url="/main/home" />
+		<security:logout logout-success-url="/main/home"/>
+		<security:csrf disabled="true"/>
+		<security:remember-me data-source-ref="dataSource"/>
+	</security:http>
+
+
+
+	<security:authentication-manager>
+		<security:authentication-provider user-service-ref="customUserDetailsService">
+			<security:password-encoder ref="bcryptPasswordEncoder"/>
+		</security:authentication-provider>
+	</security:authentication-manager>	
+
+<!-- 
+	<security:authentication-manager>
+		<security:authentication-provider>
+			<security:user-service>
+				<security:user name="member" password="{noop}member" authorities="ROLE_MEMBER"/>
+			</security:user-service>
+		</security:authentication-provider>
+	</security:authentication-manager>
+ -->
 </beans>

@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="comnos.mapper.OrderMapper">
+
+	
+
+	<select id="getOutList" resultType="comnos.domain.OrderVO">
+		SELECT DISTINCT
+			WAREHOUSE_ORDER_NO ORDER_NO, 
+			WAREHOUSE_ORDER_DATE ORDER_DATE,
+			WAREHOUSE_ORDER_STATUS ORDER_STATUS, 
+			EMP_CODE EMP_CODE
+		FROM WAREHOUSE_ORDER 
+		ORDER BY WAREHOUSE_ORDER_DATE ASC
+	</select>	
+	
+	<select id="getOrderDetail" resultType="comnos.domain.OrderVO">
+		SELECT DISTINCT
+			WAREHOUSE_ORDER_NO ORDER_NO, 
+			WAREHOUSE_ORDER_DATE ORDER_DATE,
+			PRODUCT_NO PRODUCT_NO,
+			WAREHOUSE_ORDER_EA ORDER_EA,
+			WAREHOUSE_ORDER_STATUS ORDER_STATUS, 
+			EMP_CODE EMP_CODE
+		FROM WAREHOUSE_ORDER 
+		WHERE WAREHOUSE_ORDER_NO = #{ORDER_NO}
+		ORDER BY WAREHOUSE_ORDER_DATE ASC	
+	</select>
+
+	<insert id="insertOutOrder">
+		INSERT INTO WAREHOUSE_ORDER ( 
+			WAREHOUSE_ORDER_NO, 
+			PRODUCT_NO, 
+			WAREHOUSE_ORDER_EA, 
+			WAREHOUSE_ORDER_STATUS, 
+			EMP_CODE) 
+		VALUES ( 
+			#{ORDER_NO}, 
+			#{PRODUCT_NO}, 
+			#{ORDER_EA}, 
+			#{ORDER_STATUS},  
+			#{EMP_CODE})
+	</insert>
+	
+	<select id="read" resultType="comnos.domain.OrderVO">
+		SELECT 
+			WAREHOUSE_ORDER_NO ORDER_NO, 
+			WAREHOUSE_ORDER_DATE ORDER_DATE, 
+			PRODUCT_NO PRODUCT_NO, 
+			WAREHOUSE_ORDER_EA ORDER_EA, 
+			WAREHOUSE_ORDER_STATUS ORDER_STATUS, 
+			EMP_CODE EMP_CODE
+		FROM WAREHOUSE_ORDER
+		WHERE WAREHOUSE_ORDER_NO = #{ORDER_NO}
+	</select>
+	
+	<update id="update">
+		UPDATE WAREHOUSE_ORDER
+		SET
+			PRODUCT_NO = #{PRODUCT_NO}, 
+			WAREHOUSE_ORDER_EA = #{ORDER_EA}, 
+			WAREHOUSE_ORDER_STATUS = #{ORDER_STATUS}, 
+			EMP_CODE = #{EMP_CODE}
+		WHERE
+			WAREHOUSE_ORDER_NO = #{ORDER_NO}
+	</update>
+	
+	<update id="statusUpdate">
+		UPDATE WAREHOUSE_ORDER
+		SET
+			WAREHOUSE_ORDER_STATUS = #{ORDER_STATUS}
+		WHERE
+			WAREHOUSE_ORDER_NO = #{ORDER_NO}
+	</update>
+	
+	<select id="checkOrderNo" resultType="Integer">
+		SELECT EXISTS
+			( SELECT * FROM WAREHOUSE_ORDER
+			  WHERE WAREHOUSE_ORDER_NO = #{ORDER_NO})
+		as isChk;
+	</select>
+	
+</mapper>

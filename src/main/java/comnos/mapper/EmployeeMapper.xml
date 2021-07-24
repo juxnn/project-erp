@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="comnos.mapper.EmployeeMapper">
+
+	<select id="getList" resultType="comnos.domain.EmployeeVO">	
+		SELECT
+			EMP_CODE EMP_CODE, 
+			EMP_NAME EMP_NAME,
+			EMP_DATE EMP_DATE, 
+			STORE_NO STORE_NO, 
+			RANK_NO RANK_NO, 
+			DEPT_NO DEPT_NO, 
+			EMP_BIRTH EMP_BIRTH, 
+			EMP_PHONE EMP_PHONE,
+			EMP_ADDRESS EMP_ADDRESS,  
+			EMP_SEX EMP_SEX, 
+			EMP_EMAIL EMP_EMAIL, 
+			EMP_PASSWORD EMP_PASSWORD, 
+			CHECK_RESIGNATION CHECK_RESIGNATION
+		FROM EMPLOYEE
+		ORDER BY RANK_NO ASC
+	</select>
+
+	<select id="getRankList" resultType="comnos.domain.RankVO">	
+		SELECT
+			RANK_NO RANK_NO, 
+			RANK_NAME RANK_NAME,
+			RANK_ROLE RANK_ROLE
+		FROM EMPLOYEE_RANK
+		ORDER BY RANK_NO ASC
+	</select>
+	<select id="getDeptList" resultType="comnos.domain.DepartmentVO">	
+		SELECT
+			DEPT_NO DEPT_NO, 
+			DEPT_NAME DEPT_NAME,
+			DEPT_ROLE DEPT_ROLE
+		FROM DEPARTMENT
+		ORDER BY DEPT_NO ASC
+	</select>
+	
+
+	<delete id="remove">
+		DELETE FROM EMPLOYEE
+		WHERE EMP_CODE = #{EMP_CODE}
+	</delete>
+
+	<delete id="removeAuth">
+		DELETE FROM EMPLOYEE_AUTH
+		WHERE EMP_CODE = #{EMP_CODE}
+	</delete>
+
+	<update id="update">
+		UPDATE EMPLOYEE
+		SET	EMP_CODE = #{EMP_CODE},
+			EMP_NAME = #{EMP_NAME},
+			EMP_DATE = #{EMP_DATE},
+			STORE_NO = #{STORE_NO},
+			RANK_NO = #{RANK_NO},
+			DEPT_NO = #{DEPT_NO},
+			EMP_BIRTH =#{EMP_BIRTH}, 
+			EMP_PHONE = #{EMP_PHONE},
+			EMP_ADDRESS = #{EMP_ADDRESS}, 
+			EMP_SEX = #{EMP_SEX},
+			EMP_EMAIL = #{EMP_EMAIL},
+			EMP_PASSWORD = #{EMP_PASSWORD},
+			CHECK_RESIGNATION = #{CHECK_RESIGNATION}
+		WHERE EMP_CDOE = #{EMP_CODE}
+	</update>
+
+	<insert id="insert">
+		INSERT INTO EMPLOYEE (
+			EMP_CODE, EMP_NAME, EMP_DATE, STORE_NO, RANK_NO, DEPT_NO, 
+			EMP_BIRTH, EMP_PHONE, EMP_ADDRESS, EMP_SEX, EMP_EMAIL, EMP_PASSWORD, CHECK_RESIGNATION)
+		VALUES(
+			#{EMP_CODE}, #{EMP_NAME}, #{EMP_DATE}, #{STORE_NO}, #{RANK_NO}, #{DEPT_NO}, 
+			#{EMP_BIRTH}, #{EMP_PHONE}, #{EMP_ADDRESS}, #{EMP_SEX}, #{EMP_EMAIL}, #{EMP_PASSWORD}, #{CHECK_RESIGNATION})		
+	</insert>
+
+	<select id="readRank" resultType="comnos.domain.RankVO">
+		SELECT RANK_NO, RANK_NAME, RANK_ROLE
+		FROM EMPLOYEE_RANK
+		WHERE RANK_NO = #{RANK_NO}
+	</select>
+
+	<select id="readDept" resultType="comnos.domain.DepartmentVO">
+		SELECT DEPT_NO, DEPT_NAME, DEPT_ROLE
+		FROM DEPARTMENT
+		WHERE DEPT_NO = #{DEPT_NO}
+	</select>
+	
+	<insert id="insertAuth">
+		INSERT INTO EMPLOYEE_AUTH
+			(EMP_CODE, AUTH)
+		VALUES
+			(#{EMP_CODE}, #{AUTH})
+	</insert>
+	
+
+	<select id ="read" resultMap="employeeMap">
+		SELECT
+			E.EMP_CODE EMP_CODE, 
+			E.EMP_NAME EMP_NAME,
+			E.EMP_DATE EMP_DATE, 
+			E.STORE_NO STORE_NO, 
+			E.RANK_NO RANK_NO, 
+			E.DEPT_NO DEPT_NO, 
+			E.EMP_BIRTH EMP_BIRTH,
+			E.EMP_PHONE EMP_PHONE,
+			E.EMP_ADDRESS EMP_ADDRESS, 
+			E.EMP_SEX EMP_SEX, 
+			E.EMP_EMAIL EMP_EMAIL, 
+			E.EMP_PASSWORD EMP_PASSWORD, 
+			E.CHECK_RESIGNATION CHECK_RESIGNATION,
+			A.AUTH AUTH
+		FROM
+			EMPLOYEE E LEFT JOIN EMPLOYEE_AUTH A ON E.EMP_CODE = A.EMP_CODE
+		WHERE
+			E.EMP_CODE = #{EMP_CODE}
+	</select>
+	<resultMap type="comnos.domain.EmployeeVO" id="employeeMap">
+		<id property="EMP_CODE" column="EMP_CODE" />
+		  	<result property="EMP_NAME" column="EMP_NAME" />
+		  	<result property="EMP_DATE" column="EMP_DATE" />
+		  	<result property="STORE_NO" column="STORE_NO" />
+		  	<result property="RANK_NO" column="RANK_NO" />
+		  	<result property="DEPT_NO" column="DEPT_NO" />
+		  	<result property="EMP_BIRTH" column="EMP_BIRTH" />
+		  	<result property="EMP_PHONE" column="EMP_PHONE" />
+		  	<result property="EMP_ADDRESS" column="EMP_ADDRESS" />
+		  	<result property="EMP_SEX" column="EMP_SEX" />
+		  	<result property="EMP_EMAIL" column="EMP_EMAIL" />
+		  	<result property="EMP_PASSWORD" column="EMP_PASSWORD" />
+		  	<result property="CHECK_RESIGNATION" column="CHECK_RESIGNATION" />
+		  	<collection property="AUTH_LIST" resultMap="authMap" />
+	 </resultMap>
+	 <resultMap type="comnos.domain.AuthVO" id="authMap">
+	 		<result property="EMP_CODE" column="EMP_CODE" />
+	 		<result property="AUTH" column="AUTH" />
+	 </resultMap>
+
+
+
+</mapper>

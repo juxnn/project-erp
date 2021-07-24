@@ -13,6 +13,7 @@
  -->
 
 <script defer src="${pageContext.request.contextPath }/resources/js/all.js"></script>
+<link rel="stylesheet" href="//code.jquery.com/ui/1.8.18/themes/base/jquery-ui.css" />
 
 <%--
 security info

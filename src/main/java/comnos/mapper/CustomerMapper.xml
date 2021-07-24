@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+  <mapper namespace="comnos.mapper.CustomerMapper">
+  
+  	<select id="getList" resultType="comnos.domain.CustomerVO">
+		SELECT
+			CUS_NO CUS_NO, 
+			CUS_NAME CUS_NAME,
+			CUS_PHONE CUS_PHONE,
+			CUS_ADDRESS CUS_ADDRESS,  
+			CUS_DETAIL CUS_DETAIL 
+		FROM CUSTOMER
+		ORDER BY CUS_NO ASC
+	</select>
+  
+   	<insert id="insert">
+		INSERT INTO CUSTOMER ( 
+			CUS_NO, 
+			CUS_NAME, 
+			CUS_PHONE, 
+			CUS_ADDRESS, 
+			CUS_DETAIL) 
+		VALUES ( 
+			#{CUS_NO},   
+			#{CUS_NAME}, 
+			#{CUS_PHONE},
+			#{CUS_ADDRESS},
+			#{CUS_DETAIL})  
+	</insert>
+	
+	<select id="read" resultType="comnos.domain.CustomerVO">
+		SELECT 
+			CUS_NAME CUS_NAME, 
+			CUS_PHONE CUS_PHONE, 
+			CUS_ADDRESS CUS_ADDRESS,
+			CUS_DETAIL CUS_DETAIL 
+		FROM CUSTOMER WHERE CUS_NO = #{CUS_NO}			
+	</select>
+	
+	<update id="update">
+		UPDATE CUSTOMER
+		SET
+			CUS_NO = #{CUS_NO}, 
+			CUS_NAME = #{CUS_NAME}, 
+			CUS_PHONE = #{CUS_PHONE},  
+			CUS_ADDRESS = #{CUS_ADDRESS}, 
+			CUS_DETAIL = #{CUS_DETAIL}
+		WHERE
+			CUS_NO = #{CUS_NO}	
+	</update>
+	
+	<delete id="delete">
+		DELETE FROM CUSTOMER WHERE CUS_NO = #{CUS_NO}
+	</delete>
+  </mapper>
