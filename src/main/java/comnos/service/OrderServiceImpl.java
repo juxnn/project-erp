@@ -18,19 +18,16 @@ public class OrderServiceImpl implements OrderService{
 	@Override //외부 발주서
 	public void addOutOrder(OrderVO order) {
 		mapper.insertOutOrder(order);
-		
 	}
 
 	@Override
 	public List<OrderVO> getOutList() {
-		
 		return mapper.getOutList();
 	}
 	
 	
 	@Override
 	public List<OrderVO> getOrderDetail(String ono) {
-		
 		return mapper.getOrderDetail(ono);
 	}
 	

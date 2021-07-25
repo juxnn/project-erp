@@ -17,7 +17,7 @@ public interface StockService {
 
 	public void update(StockVO stock);
 
-	public int countEA(StockVO vo);
+	public int countEA(StockVO stock);
 
 	public void addOrder(OrderVO order);
 

@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import comnos.mapper.OrderMapper;
+import comnos.mapper.StoreInMapper;
 import comnos.mapper.StoreOrderMapper;
 import comnos.mapper.StoreOutMapper;
 import lombok.Setter;
@@ -22,6 +23,9 @@ public class ComputeServiceImpl implements ComputeService{
 	
 	@Setter(onMethod_=@Autowired)
 	private StoreOutMapper storeOutMapper;
+	
+	@Setter(onMethod_=@Autowired)
+	private StoreInMapper storeInMapper;
 	
 	@Override
 	public String mimeOrderNumberA(int number) {
@@ -62,9 +66,24 @@ public class ComputeServiceImpl implements ComputeService{
 			return orderNo;
 		}
 	}
+	
+	
 	@Override
 	public String mimeOrderNumberD(int number) {
-		// TODO Auto-generated method stub
-		return null;
+		Date date = new Date();
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
+		String orderNo = dateFormat.format(date) + "-D" + String.format("%02d", number);
+		
+		if(storeInMapper.checkOrderNo(orderNo) == 1) {	//번호가 있다면
+			return mimeOrderNumberD(number+1);
+		}else {
+			return orderNo;
+		}
 	}
+	
+	
+	
+	
+	
+	
 }

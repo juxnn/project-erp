@@ -33,7 +33,6 @@ public class EmployeeServiceImpl implements EmployeeService{
 	
 	@Override
 	public EmployeeVO read(Long code) {
-		
 		return mapper.read(code);
 	}
 	
@@ -107,6 +106,11 @@ public class EmployeeServiceImpl implements EmployeeService{
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+	
+	@Override
+	public List<EmployeeVO> search(EmployeeVO vo) {
+		return mapper.search(vo);
 	}
 }
 

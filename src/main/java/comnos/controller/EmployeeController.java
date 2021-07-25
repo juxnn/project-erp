@@ -81,18 +81,22 @@ public class EmployeeController {
 	@GetMapping("/list")
 	public void getList(Model model) {
 		
-		List<EmployeeVO> list = service.getList();
-		
-		List<RankVO> rankList = service.getRankList();
 		List<DepartmentVO> deptList = service.getDeptList();
 		List<StoreVO> storeList =storeService.getList();
+		List<RankVO> rankList = service.getRankList();		
+		//List<EmployeeVO> list = service.getList();
 		
+		model.addAttribute("deptList", deptList);
 		model.addAttribute("storeList", storeList);
 		model.addAttribute("rankList", rankList);
-		model.addAttribute("deptList", deptList);
-		
-		
-		model.addAttribute("list", list);
+		//model.addAttribute("list", list);
+	}
+	
+	@PostMapping("/search")
+	public ResponseEntity<List<EmployeeVO>> searchEmployee(EmployeeVO vo) {
+	
+		List<EmployeeVO> list = service.search(vo);
+		return new ResponseEntity<>(list, HttpStatus.OK);
 	}
 
 	@GetMapping("/findpw")

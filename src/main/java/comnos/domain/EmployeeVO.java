@@ -24,6 +24,10 @@ public class EmployeeVO {
 	private String EMP_PASSWORD;
 	private Integer CHECK_RESIGNATION;
 	
+	private String STORE_NAME;
+	private String DEPT_NAME;
+	private String RANK_NAME;
+	
 	private List<AuthVO> AUTH_LIST;
 	
 }

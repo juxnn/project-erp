@@ -189,7 +189,7 @@ function submitCheckboxValue(){
 		//ajax수정해야함
 		$.ajax({
 			type: "post",
-			url: "${appRoot}/stock/submit-out",
+			url: "${appRoot}/stock/out-submit",
 			data: data,
 			success: function(data){
 					console.log("성공");

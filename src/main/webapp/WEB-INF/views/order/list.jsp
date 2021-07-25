@@ -42,17 +42,16 @@ $(document).ready(function(){
 
 			$("#order-detail-no").text(data[0].order_NO);
 			$("#order-detail-date").text(data[0].order_DATE);
-			$("#order-detail-emp").text(data[0].emp_CODE);
+			$("#order-detail-emp").text(data[0].emp_NAME);
 			$("#order-detail-status").text(data[0].order_STATUS);
-				
 			$("#order-confirm-value").val(data[0].order_NO);
 			
 			for(i=0; i<data.length; i++){
 				html += "<tr class='removeTr'>";
 				html += "<td>0</td>";
-				html += "<td>상품타입</td>";
+				html += "<td>" + data[i].product_TYPE + "</td>";
 				html += "<td>" + data[i].product_NO + "</td>";
-				html += "<td>상품이름</td>";
+				html += "<td>" + data[i].product_NAME+ "</td>";
 				html += "<td>" + data[i].order_EA + "</td>";
 				html += "</tr>"
 			}
@@ -83,9 +82,9 @@ $(document).ready(function(){
 			<tr>
 				<th>#</th>
 				<th>발주 번호</th>
-				<th>발주 날짜</th>
 				<th>처리 상태</th>
 				<th>담당자</th>
+				<th>발주 날짜</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -93,10 +92,9 @@ $(document).ready(function(){
 			<tr class='order-list'>
 				<td>${status.count }</td>
 				<td class="order-no">${order.ORDER_NO }</td>
-				<td><fmt:formatDate value="${order.ORDER_DATE}" pattern="yyyy-MM-dd" /></td>
-				
 				<td>${order.ORDER_STATUS }</td>
-				<td>${order.EMP_CODE }</td>
+				<td>${order.EMP_NAME }</td>
+				<td><fmt:formatDate value="${order.ORDER_DATE}" pattern="yyyy-MM-dd" /></td>
 			</tr>
 			</c:forEach>	
 		</tbody>

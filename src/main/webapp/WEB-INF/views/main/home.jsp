@@ -14,6 +14,7 @@
 </head>
 <body>
 <ma:navbar />
+<ma:navbar1 />
 <div class="container">
 	<h1>메인페이지 HOME 입니다.</h1>
 </div>

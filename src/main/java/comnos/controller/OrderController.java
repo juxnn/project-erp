@@ -43,6 +43,7 @@ public class OrderController {
 	
 	@GetMapping("/form")
 	@PreAuthorize("isAuthenticated()")
+	@Transactional
 	public void orderForm(Principal principal, Model model) {
 		
 		
@@ -120,36 +121,32 @@ public class OrderController {
 	@Transactional
 	public String statusUpdate(OrderVO order) {
 		
-		//발주서 업데이트
-		service.statusUpdate(order);
+		service.statusUpdate(order);	//발주서 업데이트
 		
 		int status = order.getORDER_STATUS();
 		
-		//발주 통과(1)
-		if(status == 1) {
-			//발주번호의 상품들을 전부 가져온다.
+		if(status == 1) {	//발주 통과
+			
 			String ono = order.getORDER_NO();
-			List<OrderVO> list = service.getOrderDetail(ono);
+			List<OrderVO> list = service.getOrderDetail(ono);	//발주번호의 상품들을 전부 가져온다.
 			
-			//하나씩 넣어준다.
-			for(int i=0; i<list.size(); i++) {
-			
-				
-				OrderVO vo = list.get(i);
-				String pno = vo.getPRODUCT_NO();	// 발주서의 상품번호[i]
-				int orderEA = vo.getORDER_EA();		// 발주서의 주문갯수[i]
-													// 기존 재고랑 합쳐야하는 작업이 필요하다.
+			for(int i=0; i<list.size(); i++) { 			//하나씩 넣어준다.
+		
+//				OrderVO vo = list.get(i);
+//				String pno = vo.getPRODUCT_NO();
+//				int orderEA = vo.getORDER_EA();
+								
+				String pno = list.get(i).getPRODUCT_NO();
+				int orderEA = list.get(i).getORDER_EA();
+													
 				
 				StockVO stock = new StockVO();
-				
-				stock.setSTORE_NO(0);						// 창고(=0)
-				stock.setPRODUCT_NO(pno);					// 상품번호[i]	
-				
-				int stockEA =  stockService.countEA(stock);	// 창고의 기존 재고를 가져온다.
-			
-				int totalEA = orderEA + stockEA;			// 총 재고 = 승인된 주문 + 기존 재고
-				stock.setSTORE_STOCK_EA(totalEA);			
-				
+				stock.setPRODUCT_NO(pno);
+				stock.setSTORE_NO(0);
+				int exsistEA =  stockService.countEA(stock);	// 창고의 기존 재고를 가져온다.
+
+				int updateEA = orderEA + exsistEA;				// 총 재고 = 승인된 주문 + 기존 재고
+				stock.setSTORE_STOCK_EA(updateEA);
 				stockService.update(stock);					//재고 업데이트
 			}	
 		//발주반려(2)	

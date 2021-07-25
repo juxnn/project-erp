@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
@@ -35,6 +36,7 @@ public class StoreOrderController {
 	
 	
 	@GetMapping("/form")
+	@PreAuthorize("isAuthenticated()")
 	@Transactional
 	public void getOrderForm(Model model, Principal principal) {
 		

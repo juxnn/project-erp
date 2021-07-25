@@ -21,5 +21,7 @@ public interface StoreOrderService {
 
 	public void statusUpdate(OrderVO order);
 
+	public List<OrderVO> getListWithStatus(int status);
+
 
 }

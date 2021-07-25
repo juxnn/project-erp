@@ -41,6 +41,50 @@
 		ORDER BY DEPT_NO ASC
 	</select>
 	
+	<select id="search" resultType="comnos.domain.EmployeeVO">	
+		SELECT
+			E.EMP_CODE EMP_CODE, 
+			E.EMP_NAME EMP_NAME,
+			E.EMP_DATE EMP_DATE, 
+			E.STORE_NO STORE_NO, 
+			E.RANK_NO RANK_NO, 
+			E.DEPT_NO DEPT_NO, 
+			E.EMP_BIRTH EMP_BIRTH, 
+			E.EMP_PHONE EMP_PHONE,
+			E.EMP_ADDRESS EMP_ADDRESS,  
+			E.EMP_SEX EMP_SEX, 
+			E.EMP_EMAIL EMP_EMAIL, 
+			E.CHECK_RESIGNATION CHECK_RESIGNATION,
+			D.DEPT_NAME DEPT_NAME,
+			S.STORE_NAME STORE_NAME,
+			R.RANK_NAME RANK_NAME			
+		FROM EMPLOYEE E
+		LEFT JOIN
+			DEPARTMENT D ON E.DEPT_NO = D.DEPT_NO
+		LEFT JOIN
+			STORE S ON E.STORE_NO = S.STORE_NO
+		LEFT JOIN
+			EMPLOYEE_RANK R ON E.RANK_NO = R.RANK_NO
+		WHERE
+			<if test="DEPT_NO != null">
+				E.DEPT_NO = #{DEPT_NO} AND
+			</if>
+			<if test="STORE_NO != null">
+				E.STORE_NO = #{STORE_NO} AND
+			</if>
+			<if test="RANK_NO != null">
+				E.RANK_NO = #{RANK_NO} AND
+			</if>
+			<if test="EMP_NAME != null and !EMP_NAME.equals('')">
+				E.EMP_NAME LIKE CONCAT ('%', #{EMP_NAME}, '%') AND
+			</if>
+			<if test="EMP_CODE != null and !EMP_CODE.equals('')">
+				E.EMP_CODE LIKE CONCAT ('%', #{EMP_CODE}, '%') AND
+			</if>
+				E.CHECK_RESIGNATION = #{CHECK_RESIGNATION}
+		ORDER BY E.RANK_NO ASC
+	</select>
+	
 
 	<delete id="remove">
 		DELETE FROM EMPLOYEE
@@ -104,7 +148,8 @@
 			E.EMP_CODE EMP_CODE, 
 			E.EMP_NAME EMP_NAME,
 			E.EMP_DATE EMP_DATE, 
-			E.STORE_NO STORE_NO, 
+			E.STORE_NO STORE_NO,
+			S.STORE_NAME STORE_NAME, 
 			E.RANK_NO RANK_NO, 
 			E.DEPT_NO DEPT_NO, 
 			E.EMP_BIRTH EMP_BIRTH,
@@ -116,7 +161,11 @@
 			E.CHECK_RESIGNATION CHECK_RESIGNATION,
 			A.AUTH AUTH
 		FROM
-			EMPLOYEE E LEFT JOIN EMPLOYEE_AUTH A ON E.EMP_CODE = A.EMP_CODE
+			EMPLOYEE E
+		LEFT JOIN
+			EMPLOYEE_AUTH A ON E.EMP_CODE = A.EMP_CODE
+		LEFT JOIN
+			STORE S ON E.STORE_NO = S.STORE_NO
 		WHERE
 			E.EMP_CODE = #{EMP_CODE}
 	</select>
@@ -125,6 +174,7 @@
 		  	<result property="EMP_NAME" column="EMP_NAME" />
 		  	<result property="EMP_DATE" column="EMP_DATE" />
 		  	<result property="STORE_NO" column="STORE_NO" />
+		  	<result property="STORE_NAME" column="STORE_NAME" />
 		  	<result property="RANK_NO" column="RANK_NO" />
 		  	<result property="DEPT_NO" column="DEPT_NO" />
 		  	<result property="EMP_BIRTH" column="EMP_BIRTH" />

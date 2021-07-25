@@ -15,6 +15,7 @@ public interface EmployeeService {
 	public List<DepartmentVO> getDeptList();
 	public int getCertiNum();
 	public void mailSend(String email);
+	public List<EmployeeVO> search(EmployeeVO vo);
 
 
 }

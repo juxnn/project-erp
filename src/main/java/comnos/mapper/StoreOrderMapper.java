@@ -9,7 +9,9 @@ public interface StoreOrderMapper {
 	
 	public void insert(OrderVO order);
 	
-	public List<OrderVO> getList();
+	public List<OrderVO> getList();			//상품 list 까지 가져오기
+	
+	public List<OrderVO> getListWithStatus(int status);
 	
 	public List<OrderVO> getOrderList();	//발주서 목록만 가져오기
 	

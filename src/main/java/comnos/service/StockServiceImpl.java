@@ -29,8 +29,8 @@ public class StockServiceImpl implements StockService{
 	}
 
 	@Override
-	public int countEA(StockVO vo) {
-		return mapper.countEA(vo);
+	public int countEA(StockVO stock) {
+		return mapper.countEA(stock);
 	}
 	
 	@Override

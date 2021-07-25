@@ -51,10 +51,10 @@ $(document).ready(function(){
 			
 			for(i=0; i<data.length; i++){
 				html += "<tr class='removeTr'>";
-				html += "<td>0</td>";
-				html += "<td>상품타입</td>";
+				html += "<td>"+ (i+1) +"</td>";
+				html += "<td>" + data[i].product_TYPE + "</td>";
 				html += "<td>" + data[i].product_NO + "</td>";
-				html += "<td>상품이름</td>";
+				html += "<td>" + data[i].product_NAME + "</td>";
 				html += "<td>" + data[i].order_EA + "</td>";
 				html += "</tr>"
 			}

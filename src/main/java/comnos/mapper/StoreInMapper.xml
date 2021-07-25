@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="comnos.mapper.StoreInMapper">
+
+<select id="getList" resultType="comnos.domain.OrderVO">
+	SELECT DISTINCT
+		IN_NO ORDER_NO, 
+		IN_DATE ORDER_DATE,
+		STORE_NO STORE_NO,
+		PRODUCT_NO PRODUCT_NO,
+		IN_EA ORDER_EA, 
+		EMP_CODE EMP_CODE
+	FROM STORE_IN_PRODUCT 
+	ORDER BY IN_DATE ASC
+</select>	
+
+<select id="getListOrder" resultType="comnos.domain.OrderVO">
+	SELECT DISTINCT
+		IN_NO ORDER_NO, 
+		IN_DATE ORDER_DATE,
+		STORE_NO STORE_NO, 
+		EMP_CODE EMP_CODE
+	FROM STORE_IN_PRODUCT 
+	ORDER BY IN_DATE ASC
+</select>	
+
+
+<insert id="insert">
+	INSERT INTO STORE_IN_PRODUCT ( 
+		IN_NO,
+		STORE_NO, 
+		PRODUCT_NO, 
+		IN_EA, 
+		EMP_CODE) 
+	VALUES ( 
+		#{ORDER_NO},
+		#{STORE_NO}, 
+		#{PRODUCT_NO}, 
+		#{ORDER_EA},   
+		#{EMP_CODE})
+</insert>
+
+<select id="checkOrderNo" resultType="Integer">
+	SELECT EXISTS
+		( SELECT * FROM STORE_IN_PRODUCT
+		  WHERE IN_NO = #{ORDER_NO})
+	as isChk;
+</select>
+
+
+
+</mapper>

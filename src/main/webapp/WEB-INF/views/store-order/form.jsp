@@ -113,8 +113,8 @@ function changeTypeSelect(elem) {
 					<td>발주넘버: 자동생성</td>
 				</tr>
 				<tr>
-					<td>매장넘버<input type="text" name="STORE_NO" value="${employee.STORE_NO }"></td>
-					<td>매장 이름(로그인한 담당자 매장 번호)</td>
+					<td><input type="text" name="STORE_NO" value="${employee.STORE_NO }"></td>
+					<td>${employee.STORE_NAME }</td>
 					<td>매장 정보</td>
 				</tr>
 				<tr>

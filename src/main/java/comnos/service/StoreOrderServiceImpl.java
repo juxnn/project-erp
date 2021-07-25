@@ -25,6 +25,11 @@ public class StoreOrderServiceImpl implements StoreOrderService{
 		return mapper.getList();
 	}
 	@Override
+	public List<OrderVO> getListWithStatus(int status) {
+		return mapper.getListWithStatus(status);
+	}
+	
+	@Override
 	public List<OrderVO> getListWithPaging(Criteria cri) {
 		return mapper.getListWithPaging(cri);
 	}

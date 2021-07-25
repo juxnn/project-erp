@@ -3,7 +3,6 @@ package comnos.mapper;
 import java.util.List;
 
 import comnos.domain.Criteria;
-import comnos.domain.ProductVO;
 import comnos.domain.StockVO;
 
 public interface StockMapper {

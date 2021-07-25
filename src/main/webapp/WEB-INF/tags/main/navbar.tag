@@ -102,8 +102,8 @@
           <a class="dropdown-item" href="${stockEditUrl }">재고 관리</a>
           <a class="dropdown-item" href="${appRoot }/store-order/form">발주서 작성(창고->매장)</a>
           <a class="dropdown-item" href="${appRoot }/store-order/list">발주서 목록(창고->매장)</a>
-          <a class="dropdown-item" href="${appRoot }/stock/in-form"">입고 등록</a>
-          <a class="dropdown-item" href="${appRoot }/stock/in-list"">입고 조회</a>
+          <a class="dropdown-item" href="${appRoot }/stock/in-form">입고 등록</a>
+          <a class="dropdown-item" href="${appRoot }/stock/in-list">입고 조회</a>
           <a class="dropdown-item" href="${appRoot }/stock/out-form">출고 등록</a>
           <a class="dropdown-item" href="${appRoot }/stock/out-list">출고 조회</a>
           <div class="dropdown-divider"></div>

@@ -16,6 +16,23 @@
 <ma:navbar />
 <div class="container">
 	<h1>재고 목록</h1>
+	
+	<select id="store-select" onchange="changeTypeSelect(this)">
+		<option value="">매장을 선택하세요</option>
+		<c:forEach items="${storeList }" var="store">
+			<option id="${store.STORE_NAME }" value="${store.STORE_NO }">${store.STORE_NAME }</option>
+		</c:forEach>	
+	</select>
+	
+	<select id="product-type-select" onchange="changeTypeSelect(this)">
+		<option value="">상품 TYPE</option>
+		<c:forEach items="${productTypeList }" var="type">
+			<option id="${type.PRODUCT_TYPE }" value="${type.PRODUCT_TYPE }">${type.PRODUCT_TYPE }</option>
+		</c:forEach>	
+	</select>
+	
+	<button type="button">재고검색</button>
+	
 	<table class="table table-striped">
 		<thead>
 			<tr>

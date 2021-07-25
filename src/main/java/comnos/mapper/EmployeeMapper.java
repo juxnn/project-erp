@@ -26,6 +26,8 @@ public interface EmployeeMapper {
 
 	public List<RankVO> getRankList();
 	public List<DepartmentVO> getDeptList();
+
+	public List<EmployeeVO> search(EmployeeVO vo);
 	
 	
 	

@@ -12,5 +12,8 @@ public class OrderVO {
 	private String PRODUCT_NO;
 	private int ORDER_EA;
 	private int ORDER_STATUS;
-	private long EMP_CODE;	
+	private long EMP_CODE;
+	private String EMP_NAME;
+	private String PRODUCT_TYPE;
+	private String PRODUCT_NAME;
 }

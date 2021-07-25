@@ -104,7 +104,6 @@ function changeTypeSelect(elem) {
 	<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#product-search-modal">모달버튼</button>
 	
 	<form method="post" action="${appRoot }/order/add">
-		<!-- 테이블로 작성 -->
 		<table class="table table-striped">
 			<thead>
 			</thead>
@@ -131,8 +130,7 @@ function changeTypeSelect(elem) {
 					<td>
 						<select class="product-product-select" name='products'>
 							<option value="">타입을 먼저 선택하세요</option>
-						</select>
-								
+						</select>	
 					</td>
 					<td><input type='number' name='ORDER_EA'> </td>
 				</tr>

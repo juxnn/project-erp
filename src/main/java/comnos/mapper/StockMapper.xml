@@ -41,8 +41,6 @@
 		ORDER BY s.PRODUCT_NO ASC
 	</select>
 	
-	
-	
 	<select id="exist">
 		SELECT PRODUCT_NO
 		FROM STORE_STOCK
@@ -74,7 +72,7 @@
 		WHERE
 			STORE_NO = #{STORE_NO}
 		AND
-			PRODUCT_NO = #{PRODUCT_NO}	
+			PRODUCT_NO = #{PRODUCT_NO}
 	</update>
   
   
