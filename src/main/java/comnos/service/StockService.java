@@ -24,6 +24,8 @@ public interface StockService {
 	public List<StockVO> getListTest(long sno);
 
 	public List<StockVO> getListWithPaging(Criteria cri);
+
+	public List<StockVO> serach(StockVO vo);
 	
 
 }

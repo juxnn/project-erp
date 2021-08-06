@@ -11,9 +11,56 @@
 
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<style>
+html, body{
+	height: 100%;
+}
+.box {
+	display: flex;
+	height: 100%;
+}
+.side-box-A {
+	background-color: white;
+	width: 220px;
+	padding-top: 20px;
+	border-right-color: #C0C0C0;
+	border-right-style: solid;
+	border-right-width: 1px;
+	hight: 500px;
+}
+.side-box-name {
+	background-color: #DCDCDC;
+	height: 100px;
+	padding: 30px;
+	font-size: 25px;
+	margin-top: -20px;
+	text-align: center;
+}
+
+.side-box-content {
+	height: 70px;
+	font-size: 20px;
+	padding: 15px;
+	border-top-color: #C0C0C0;
+	border-top-style: solid;
+	border-top-width: 1px;
+	text-align: center;
+}
+.container{
+	margin-top: 50px;
+}
+.title-box {
+	text-align: center;
+	margin-bottom: 50px;
+}
+</style>
 </head>
 <body>
 <ma:navbar />
+<ma:navbar-b />
+<div class="box">
+<!-- ********************************* 사이드 박스 ********************************* -->
+<ma:side-box-b2 />
 <div class="container">
 	<h1>재고관리 페이지입니다.</h1>
 	<h3>아래는 상품 데이터 리스트입니다.</h3>
@@ -37,6 +84,7 @@
 			</c:forEach>	
 		</tbody>
 	</table>
+</div>
 </div>
 </body>
 </html>

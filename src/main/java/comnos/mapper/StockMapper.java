@@ -21,4 +21,6 @@ public interface StockMapper {
 
 	public List<StockVO> getListWithPaging(Criteria cri);
 
+	public List<StockVO> search(StockVO vo);
+
 }

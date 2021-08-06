@@ -32,13 +32,45 @@
 			s.PRODUCT_NO PRODUCT_NO, 
 			p.PRODUCT_NAME PRODUCT_NAME,
 			s.STORE_STOCK_EA STORE_STOCK_EA
-		FROM STORE_STOCK s LEFT JOIN PRODUCT p ON s.PRODUCT_NO = p.PRODUCT_NO 
-		WHERE s.STORE_NO = #{type2} AND PRODUCT_TYPE LIKE #{type}
-		AND 
-	    	s.PRODUCT_NO LIKE CONCAT ('%', #{keyword1}, '%')
-	    AND
-	    	p.PRODUCT_NAME LIKE CONCAT ('%', #{keyword2}, '%')
+		FROM STORE_STOCK s 
+			LEFT JOIN PRODUCT p ON s.PRODUCT_NO = p.PRODUCT_NO 
+		WHERE
+			<if test="type != null and !type.equals('')">
+			 	PRODUCT_TYPE LIKE #{type} AND
+			</if>
+			<if test="keyword1 != null and !keyword1.equals('')">	 
+	    		s.PRODUCT_NO LIKE CONCAT ('%', #{keyword1}, '%') AND
+	    	</if>
+ 			<if test="keyword2 != null and !keyword2.equals('')">
+		    	p.PRODUCT_NAME LIKE CONCAT ('%', #{keyword2}, '%') AND
+	    	</if>
+	    	s.STORE_NO = #{type2}
 		ORDER BY s.PRODUCT_NO ASC
+	</select>
+	
+	<select id="search"  resultType="comnos.domain.StockVO">
+		SELECT
+			s.STORE_NO STORE_NO, 
+			s.PRODUCT_NO PRODUCT_NO, 
+			s.STORE_STOCK_EA STORE_STOCK_EA,
+			p.PRODUCT_NAME PRODUCT_NAME,
+			p.PRODUCT_TYPE PRODUCT_TYPE,
+			st.STORE_NAME STORE_NAME
+		FROM STORE_STOCK s
+		LEFT JOIN
+			PRODUCT p ON s.PRODUCT_NO = p.PRODUCT_NO
+		LEFT JOIN
+			STORE st ON s.STORE_NO = st.STORE_NO
+		WHERE
+			<if test="STORE_NO != null">
+				s.STORE_NO = #{STORE_NO} AND</if>
+			<if test="PRODUCT_TYPE != null and !PRODUCT_TYPE.equals('')">
+				p.PRODUCT_TYPE = #{PRODUCT_TYPE} AND</if>
+			<if test="PRODUCT_NAME !=null and !PRODUCT_NAME.equals('')">
+				p.PRODUCT_NAME LIKE CONCAT ('%', #{PRODUCT_NAME}, '%') AND</if>
+			s.STORE_NO >= '0'
+		ORDER BY s.STORE_NO ASC;	
+		
 	</select>
 	
 	<select id="exist">

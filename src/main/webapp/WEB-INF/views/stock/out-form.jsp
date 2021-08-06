@@ -13,29 +13,66 @@
 
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<style>
+html, body{
+	height: 100%;
+}
+.box {
+	display: flex;
+	height: 100%;
+}
+.side-box-A {
+	background-color: white;
+	width: 220px;
+	padding-top: 20px;
+	border-right-color: #C0C0C0;
+	border-right-style: solid;
+	border-right-width: 1px;
+	hight: 500px;
+}
+.side-box-name {
+	background-color: #DCDCDC;
+	height: 100px;
+	padding: 30px;
+	font-size: 25px;
+	margin-top: -20px;
+	text-align: center;
+}
+
+.side-box-content {
+	height: 70px;
+	font-size: 20px;
+	padding: 15px;
+	border-top-color: #C0C0C0;
+	border-top-style: solid;
+	border-top-width: 1px;
+	text-align: center;
+}
+.container{
+	margin-top: 50px;
+}
+.title-box {
+	text-align: center;
+	margin-bottom: 50px;
+}
+</style>
 </head>
 <body>
 <ma:navbar />
+<ma:navbar-c />
+<div class="box">
+<!-- ********************************* 사이드 박스 ********************************* -->
+<ma:side-box-c1 />
 <div class="container">
-	<h1>출고 등록</h1>
-	(창고에서 매장으로 출고)<br>
-	출고서 번호(자동채번)<br>
-	날짜(알아서)<br>
-	<hr>
-	매장: ${employee.STORE_NO }<br>
-	담당자(로그인) : ${employee.EMP_NAME }<br>	
-	<br>
+<!-- ********************************* 타이틀 ********************************* -->
+<div class="title-box">
+	<h1>출고등록</h1>
+</div>
+
 	<!-- 
 	창고에서 모달로 제품리스트들을 가져오는데 재고도 확인이 되어야 한다.
 	 -->
-	상품NO<br>
-	상품EA<br>
-	<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#add-product-modal">직접출고하기</button>
-	<hr>
-	<h3>발주서중 처리상태 1인 애들만 가져옴.</h3>
-	<h4>상품 재고랑 갯수 확인하고 알아서 발주하는 버튼 만들까?</h4>
-	
-	
+	<h1>미출고 발주 리스트</h1>
 <!-- **************************************** 발주서 List(status:1) **************************************** -->		
 	<table class="table table-striped">
 		<thead>
@@ -52,44 +89,58 @@
 			<tr class='order-list'>
 				<td>${status.count }</td>
 				<td class="order-no">${order.ORDER_NO }</td>				
-				<td>${order.ORDER_STATUS }</td>
+				<td>${order.STATUS_NAME }</td>
 				<td><fmt:formatDate value="${order.ORDER_DATE}" pattern="yyyy-MM-dd" /></td>
 				<td><button class="store-order-btn" name="store-order" value='${order.ORDER_NO }'>확인</button></td>
 			</tr>
 			</c:forEach>	
 		</tbody>
 	</table>
-	
+	<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#add-product-modal">직접출고하기</button>
 <!-- **************************************** 직접 출고하기  **************************************** -->
 <!-- **************************************** 모달  **************************************** -->		
 	<div class="modal fade" id="add-product-modal" tabindex="-1">
 		<div class="modal-dialog modal-xl">
 		  <div class="modal-content">
 		    <div class="modal-header">
-		      <h5 class="modal-title">(창고)재고 조회</h5>
+		      <h5 class="modal-title">출고서 직접 작성하기</h5>
 		      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
 		        <span aria-hidden="true">&times;</span>
 		      </button>
 		    </div>
 		    <div class="modal-body">
-		    상품타입:
-				<select id="type-select" onchange="changeTypeSelect()" class="form-control" name="PRODUCT_TYPE">
-					<option value="">상품타입 선택</option>
-					<c:forEach items="${productTypeList }" var="type" varStatus="status">
+			
+			<h5>재고 조회</h5>
+			<div class="input-group mb-3">
+				<div class="input-group-prepend">
+					<span class="input-group-text" id="basic-addon1">상품타입</span>
+				</div>
+				<select class="form-control" id="type-select" name="PRODUCT_TYPE">
+					<option value="">전체 타입</option>
+					<c:forEach items="${productTypeList }" var="type">
 						<option id="${type.PRODUCT_TYPE }" value="${type.PRODUCT_TYPE }">${type.PRODUCT_TYPE }</option>
 					</c:forEach>
 				</select>
-				상품번호:
-				<input id="pno" class="form-control mr-sm-2" type="search" placeholder="상품번호" aria-label="Search"><br>
-				상품이름:
-				<input id="pname" class="form-control mr-sm-2" type="search" placeholder="상품이름" aria-label="Search"><br>
-				<button id="product-search-btn"class="btn btn-outline-success my-2 my-sm-0" type="button">조회</button>
+				<div class="input-group-prepend">
+					<span class="input-group-text" id="basic-addon1">상품코드</span>
+				</div>
+				<input type="text" class="form-control" placeholder="상품코드를 입력하세요." id="pno">	
+				<div class="input-group-prepend">
+					<span class="input-group-text" id="basic-addon1">상품명</span>
+				</div>
+				<input type="text" class="form-control" placeholder="상품명을 입력하세요." id="pname">
+				
+				<div class="input-group-appepend">
+					<button id="product-search-btn"class="btn btn-primary my-2 my-sm-0" type="button">조회</button>
+				</div>
+			</div>
+
+				
 				    
 				    
 <!-- **************************************** 모달 재고 목록 부분 **************************************** -->				    
 				<div class="form-group">
-					<h3>재고 List</h3>
-					<table class="table table-striped">
+					<table class="table table-hover">
 						<thead>
 							<tr>
 								<th>#</th>
@@ -102,14 +153,36 @@
 						</thead>
 						<tbody id="add-product-modal-body"></tbody>
 					</table>
-					<button id="product-select-btn" type="button" class="btn btn-primary">상품선택</button>
+					<button id="product-select-btn" type="button" class="btn btn-secondary">상품 선택</button>
 				</div>
 				
 <!-- **************************************** 모달 출고서 부분 **************************************** -->			
+				<h5>출고서</h5>
 				<div class="form-group">
-				<h3>출고서</h3>
-					<input id="store-order-value" type="number" name="STORE_NO">
-					<table class="table table-striped">
+				<div class="input-group mb-3">
+					<div class="input-group-prepend">
+						<span class="input-group-text" id="basic-addon1">출고 매장 선택</span>
+					</div>
+					<select class="form-control" id="store-select" name="STORE_NO">
+							<c:forEach items="${storeList}" var="store">
+							<option value="${store.STORE_NO }">${store.STORE_NAME }</option>
+						</c:forEach>
+					</select>
+				
+				<div class="input-group-prepend">
+					<span class="input-group-text">작성일</span>
+				</div>
+				<input type="text" id="today-date" class="form-control" value="" readonly>
+				
+				<div class="input-group-prepend">
+					<span class="input-group-text" id="basic-addon1">작성자</span>
+				</div>
+				<input type="text" class="form-control" value="${pinfo.employee.EMP_NAME }" readonly>
+				</div>
+				
+				
+				
+					<table class="table table-hover">
 						<thead>
 							<tr>
 								<th>#</th>
@@ -121,14 +194,12 @@
 						</thead>
 						<tbody id="add-out-product-modal-body">
 						</tbody>
-					</table>
-					<button id="product-remove-btn" type="button" class="btn btn-primary">선택삭제</button>		
+					</table>	
+			        <button id="product-remove-btn" type="button" class="btn btn-secondary">선택 삭제</button>	
 				</div>
-				<p>Modal body text goes here.</p>
 		    </div>
 <!-- **************************************** 모달 아래 버튼 부분 **************************************** -->			    
 		    <div class="modal-footer">
-		        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
 		        <button type="button" class="btn btn-primary" id='out-order-submit-btn'>선택 출고서 제출</button>
 		    </div>
 		  </div>
@@ -148,13 +219,42 @@
         </button>
       </div>
       <div class="modal-body">
-      	<div id="order-detail-no">발주 번호:</div>
-      	<div id="order-detail-date">발주 날짜:</div>
-      	<div id="order-detail-store">발주매장:</div>
-      	<div id="order-detail-emp">담당자:</div>
-      	<div id="order-detail-status">처리상태:</div>
-		<div id="order-detail-products">상품List
-			<div class="form-group">
+      
+      
+      
+		<div class="form-group">
+		<table class="table table-bordered" >
+		  <thead>
+		  </thead>
+		  <tbody>
+		  	<tr>
+		      <td>발주 번호</td>
+		      <td id="order-detail-no"></td>
+		    </tr>
+		    <tr>
+		      <td>발주 날짜</td>
+		      <td id="order-detail-date"></td>
+		    </tr>
+		   	<tr>
+		      <td>발주 매장</td>
+		      <td id="order-detail-store"></td>
+		    </tr>
+		    <tr>
+		      <td>담당자</td>
+		      <td id="order-detail-emp"></td>
+		    </tr>
+		    <tr>
+		      <td>처리 상태</td>
+		      <td id="order-detail-status"></td>
+		    </tr>
+		  </tbody>
+		</table>
+		
+		
+		
+		
+		
+			
 				<table class="table table-striped">
 					<thead>
 						<tr>
@@ -170,14 +270,13 @@
 				</table>
 			</div>
 		</div>
-      </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
         <form id="order-confirm-form" method="post" action="${appRoot }/stock/complete-order">
-        	<input id="out-confirm-value" type="text" readonly="readonly" name="ORDER_NO" >
-        	<input id="order-status-change" type="number" value="3" readonly="readonly" name="ORDER_STATUS">
+        	<input id="out-confirm-value" type="text" readonly="readonly" name="ORDER_NO" hidden>
+        	<input id="order-status-change" type="number" value="3" readonly="readonly" name="ORDER_STATUS" hidden>
 	        <button id="out-confirm-btn" type="submit" class="btn btn-primary">그대로 출고 하기</button>
         </form>
+      </div>
       </div>
     </div>
   </div>
@@ -189,7 +288,7 @@
 	
 	
 	
-	
+</div>	
 </div>
 </body>
 </html>

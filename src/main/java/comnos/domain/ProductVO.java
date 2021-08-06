@@ -12,5 +12,5 @@ public class ProductVO {
 	private long PRODUCT_OUT_PRICE;
 	private String PRODUCT_DETAIL;
 	
-	private String FILENAME;
+	private String FILE_NAME;
 }

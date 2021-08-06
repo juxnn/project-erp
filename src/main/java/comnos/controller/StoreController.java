@@ -2,6 +2,8 @@ package comnos.controller;
 
 import java.util.List;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,19 +27,24 @@ public class StoreController {
 	public void list(Model model) {
 		
 		List<StoreVO> list = service.getList();
-		
 		model.addAttribute("list", list);
 	}
 	
 	@GetMapping("/add")
 	public void getStoreAddForm() {
-		
 	}
 	
 	@PostMapping("/add")
 	public String addStore(StoreVO store){
-		service.addStore(store);
 		
+		service.addStore(store);
 		return "redirect:/store/list";
+	}
+	
+	@PostMapping("/detail")
+	public ResponseEntity<StoreVO> getDetail(long storeNo){
+		
+		StoreVO store = service.get(storeNo);
+		return new ResponseEntity<>(store, HttpStatus.OK);
 	}
 }

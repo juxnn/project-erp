@@ -90,9 +90,52 @@ function changeTypeSelect(elem) {
 	})
 }
 </script>
+<style>
+.box {
+	display: flex;
+}
+.side-box-A {
+	background-color: white;
+	width: 220px;
+	padding-top: 20px;
+	border-right-color: #C0C0C0;
+	border-right-style: solid;
+	border-right-width: 1px;
+	hight: 500px;
+}
+.side-box-name {
+	background-color: #DCDCDC;
+	height: 100px;
+	padding: 30px;
+	font-size: 25px;
+	margin-top: -20px;
+	text-align: center;
+}
+
+.side-box-content {
+	height: 70px;
+	font-size: 20px;
+	padding: 15px;
+	border-top-color: #C0C0C0;
+	border-top-style: solid;
+	border-top-width: 1px;
+	text-align: center;
+}
+.container{
+	margin-top: 50px;
+}
+.title-box {
+	text-align: center;
+	margin-bottom: 50px;
+}
+</style>
 </head>
 <body>
 <ma:navbar />
+<ma:navbar-b />
+<div class="box">
+<!-- ********************************* 사이드 박스 ********************************* -->
+<ma:side-box-b2 />
 <div class="container">
 <h1>입고서 작성 폼</h1>
 	<form method="post" action="${appRoot}/stock/in-submit">
@@ -101,14 +144,14 @@ function changeTypeSelect(elem) {
 				<tr>
 					<th>사원번호</th>
 					<th>사원이름</th>
-					<th>정보</th>
+					<th>매장</th>
 				</tr>
 			</thead>
 			<tbody id="product-table-body">
 				<tr>
-					<td><input type="number" name='EMP_CODE' readonly="readonly" value="${employee.EMP_CODE }"></td>
+					<td>${employee.EMP_CODE }</td>
 					<td>${employee.EMP_NAME }</td>
-					<td>정보1</td>
+					<td>${employee.STORE_NAME }</td>
 				</tr>
 				<tr>
 					<th>타입</th>
@@ -134,7 +177,8 @@ function changeTypeSelect(elem) {
 			</tbody>
 		</table>
 		<button id="product-add-btn" type="button">상품 추가</button>
-		<input type="number" name="STORE_NO" value="${employee.STORE_NO }">
+		<input type="number" name='EMP_CODE' value="${employee.EMP_CODE }" hidden>
+		<input type="number" name="STORE_NO" value="${employee.STORE_NO }" hidden>
 		<button type="submit">제출</button>
 	</form>	
 	
@@ -142,6 +186,7 @@ function changeTypeSelect(elem) {
 	
 	
 	
+</div>
 </div>
 </body>
 </html>

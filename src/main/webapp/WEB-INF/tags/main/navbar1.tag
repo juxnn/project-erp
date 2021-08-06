@@ -7,9 +7,13 @@
 
 <c:url value="/employee/list" var="employeeListUrl"></c:url>
 <c:url value="/employee/register" var="registerUrl"></c:url>
+<c:url value="/employee/resign" var="resignUrl"></c:url>
 
 <c:url value="/store/list" var="storeListUrl"></c:url>
+<c:url value="/store/add" var="storeAddUrl"></c:url>
 
+<c:url value="/product/add" var="productAddUrl"></c:url>
+<c:url value="/product/list" var="productListUrl"></c:url>
 
 
 
@@ -30,7 +34,7 @@
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
         <a class="dropdown-item" href="${employeeListUrl }">사원 조회</a>
           <a class="dropdown-item" href="${registerUrl }">사원 등록</a>
-          <a class="dropdown-item" href="">퇴사자 관리</a>
+          <a class="dropdown-item" href="${resignUrl }">퇴사자 관리</a>
           <div class="dropdown-divider"></div>
           <a class="dropdown-item" href="#">Something else here</a>
         </div>

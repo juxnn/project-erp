@@ -12,6 +12,50 @@
 
 <title>Insert title here</title>
 
+<style>
+html, body{
+	height: 100%;
+}
+.box {
+	display: flex;
+	height: 100%
+}
+.side-box-A {
+	background-color: white;
+	width: 220px;
+	padding-top: 20px;
+	border-right-color: #C0C0C0;
+	border-right-style: solid;
+	border-right-width: 1px;
+	hight: 500px;
+}
+.side-box-name {
+	background-color: #DCDCDC;
+	height: 100px;
+	padding: 30px;
+	font-size: 25px;
+	margin-top: -20px;
+	text-align: center;
+}
+
+.side-box-content {
+	height: 70px;
+	font-size: 20px;
+	padding: 15px;
+	border-top-color: #C0C0C0;
+	border-top-style: solid;
+	border-top-width: 1px;
+	text-align: center;
+}
+.container{
+	margin-top: 50px;
+}
+.title-box {
+	text-align: center;
+	margin-bottom: 50px;
+}
+
+</style>
 <script>
 $(document).ready(function(){
 	
@@ -37,18 +81,29 @@ $(document).ready(function(){
 		})
 		
 		request.done(function(data){
-			console.log(data);
-			//읽은 값을 넣어준다.
-
-			$("#order-detail-no").text(data[0].order_NO);
-			$("#order-detail-date").text(data[0].order_DATE);
+	
+			//javascript date format
+			var order_date = new Date(data[0].order_DATE);
+			
+			String.prototype.string = function (len) { var s = '', i = 0; while (i++ < len) { s += this; } return s; };
+			String.prototype.zf = function (len) { return "0".string(len - this.length) + this; };
+			Number.prototype.zf = function (len) { return this.toString().zf(len); };
+			
+			const formatDate = (date)=>{
+				let formatted_date = date.getFullYear() + "-" + (date.getMonth() + 1).zf(2) + "-" + date.getDate().zf(2);
+			 	return formatted_date;
+			}
+			
+			$("#order-detail-date").text(formatDate(order_date));
+			
+			$("#order-detail-no").text(data[0].order_NO);			
 			$("#order-detail-emp").text(data[0].emp_NAME);
-			$("#order-detail-status").text(data[0].order_STATUS);
+			$("#order-detail-status").text(data[0].status_NAME);
 			$("#order-confirm-value").val(data[0].order_NO);
 			
 			for(i=0; i<data.length; i++){
 				html += "<tr class='removeTr'>";
-				html += "<td>0</td>";
+				html += "<td>" + (i+1) + "</td>";
 				html += "<td>" + data[i].product_TYPE + "</td>";
 				html += "<td>" + data[i].product_NO + "</td>";
 				html += "<td>" + data[i].product_NAME+ "</td>";
@@ -56,6 +111,12 @@ $(document).ready(function(){
 				html += "</tr>"
 			}
 			//테이블 그려주기
+			
+			if(data[0].order_STATUS == 0){
+				$("#order-refuse-btn").removeAttr("hidden", "hidden");
+				$("#order-confirm-btn").removeAttr("hidden", "hidden");
+				
+			}
 			$("#order-detail-product-list").append(html);
 		})
 		
@@ -75,9 +136,15 @@ $(document).ready(function(){
 </head>
 <body>
 <ma:navbar />
+<ma:navbar-c />
+<div class="box">
+<!-- ********************************* 사이드 박스 ********************************* -->
+<ma:side-box-c2 />
 <div class="container">
-	<h1>발주 목록</h1>
-	<table class="table table-striped">
+	<div class="title-box">
+		<h1>외부 발주서 작성 폼</h1>
+	</div>
+	<table class="table table-hover">
 		<thead>
 			<tr>
 				<th>#</th>
@@ -89,10 +156,10 @@ $(document).ready(function(){
 		</thead>
 		<tbody>
 			<c:forEach items="${list }" var="order" varStatus="status">
-			<tr class='order-list'>
+			<tr class='order-list' style="cursor:pointer;">
 				<td>${status.count }</td>
 				<td class="order-no">${order.ORDER_NO }</td>
-				<td>${order.ORDER_STATUS }</td>
+				<td>${order.STATUS_NAME }</td>
 				<td>${order.EMP_NAME }</td>
 				<td><fmt:formatDate value="${order.ORDER_DATE}" pattern="yyyy-MM-dd" /></td>
 			</tr>
@@ -100,8 +167,7 @@ $(document).ready(function(){
 		</tbody>
 	</table>
 </div>
-</body>
-
+</div>
 <!-- Modal -->
 <div class="modal fade" id="order-detail-modal" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
   <div class="modal-dialog modal-xl">
@@ -113,12 +179,34 @@ $(document).ready(function(){
         </button>
       </div>
       <div class="modal-body">
-      	<div id="order-detail-no">발주 번호:</div>
-      	<div id="order-detail-date">발주 날짜:</div>
-      	<div id="order-detail-emp">담당자:</div>
-      	<div id="order-detail-status">처리상태:</div>
 <!-- 	<div id="order-detail-cost">총 가격: <span>값</span></div> -->
-		<div id="order-detail-products">상품List
+		<div id="order-detail-products">
+		<table class="table table-bordered">
+			<tbody>
+				<tr>
+					<td>발주 번호</td>
+					<td id="order-detail-no"></td>
+				</tr>
+				<tr>
+					<td>발주 날짜</td>
+					<td id="order-detail-date"></td>
+				</tr>
+				<tr>
+					<td>담당자 </td>
+					<td id="order-detail-emp"></td>
+				</tr>
+				<tr>
+					<td>처리상태</td>
+					<td id="order-detail-status"></td>
+				</tr>
+				<tr>
+					<td>총 가격</td>
+					<td id="order-detail-totalCost"></td>
+				</tr>
+			</tbody>
+		</table>
+		
+		
 			<div class="form-group">
 				<table class="table table-striped">
 					<thead>
@@ -138,16 +226,17 @@ $(document).ready(function(){
 		</div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
         <form id="order-confirm-form" method="post" action="${appRoot }/order/status-update">
-        	<input id="order-confirm-value" type="text" readonly="readonly" name="ORDER_NO" >
-        	<input id="order-status-change" type="number" value="1" readonly="readonly" name="ORDER_STATUS">
-	    	<button id="order-refuse-btn" type="button" class="btn btn-warning">발주 반려</button>
-	        <button id="order-confirm-btn" type="submit" class="btn btn-primary">발주 승인</button>
+        	<input id="order-confirm-value" type="text" readonly="readonly" name="ORDER_NO" hidden>
+        	<input id="order-status-change" type="number" value="1" readonly="readonly" name="ORDER_STATUS" hidden>
+	    	<button id="order-refuse-btn" type="button" class="btn btn-warning" hidden>발주 반려</button>
+	        <button id="order-confirm-btn" type="submit" class="btn btn-primary" hidden>발주 승인</button>
         </form>
       </div>
     </div>
   </div>
 </div>
+</body>
+
 
 </html>

@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
 import javax.mail.internet.MimeMessage;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -86,8 +87,8 @@ public class EmployeeServiceImpl implements EmployeeService{
 	}
 
 	@Override
-	public void mailSend(String email) {
-		int certiNum = getCertiNum();
+	public void mailSend(String email, int certiNum) {
+		//int certiNum = getCertiNum();
 		//인증번호 저장해주는 곳이 필요함. 아마도 세션일듯?
 		//시간은 3분
 		//jsp에 시간 띄워주는것도 좋을 것 같다.
@@ -109,8 +110,21 @@ public class EmployeeServiceImpl implements EmployeeService{
 	}
 	
 	@Override
+	public void updatePassword(EmployeeVO vo) {
+	
+		vo.setEMP_PASSWORD(encoder.encode(vo.getEMP_PASSWORD()));
+		mapper.updatePassword(vo);
+		
+	}
+	
+	@Override
 	public List<EmployeeVO> search(EmployeeVO vo) {
 		return mapper.search(vo);
+	}
+	
+@Override
+	public void edit(EmployeeVO vo) {
+		mapper.edit(vo);
 	}
 }
 

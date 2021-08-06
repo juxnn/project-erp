@@ -51,6 +51,38 @@ $(document).ready(function(){
 		}
 		
 	})
+	$("#email-certi-check").click(function(){
+		
+		var certiNum = $("#email-certi-input").val();
+		console.log(certiNum);
+		data = {certiNum: certiNum}
+		var request = $.ajax({
+
+			type:"post",
+			url: "${appRoot}/employee/certi-check",
+			data: data,
+			success: function(data){
+				if(data == "correct"){
+					console.log("성공");				
+					$("#new-pw-btn").removeAttr('hidden');
+				}else if(data == "wrong"){
+					console.log("실패")
+				}
+			},
+			error: function(){
+				console.log("에러");
+			}
+		})
+		
+	 	request.done(function(data){
+			console.log(data);
+		}) 
+		
+		
+		
+	})
+	
+	
 })
 </script>
 
@@ -59,7 +91,7 @@ $(document).ready(function(){
 <div class="container">
 	<h1>비밀번호 찾기</h1>
 	
-	<form id="form" action="${appRoot }/employee/newpw" method="post">
+
 	
 		<div class="form-group">
 			<label for="empCode">사번</label>
@@ -76,10 +108,19 @@ $(document).ready(function(){
 		
 		<input id="email-certi-input" class="form-control" type="text" name="checkAuth" placeholder = "인증번호를 입력하세요." hidden="hidden"><br>
 		
-		<input id="email-certi-check" class="btn btn-primary" type="button" value="인증번호 확인" hidden="hidden">
+		<input id="email-certi-check" class="btn btn-primary" type="button" value="인증번호 확인" hidden="hidden"><br>
 		
-		<button type="submit" class="btn btn-success" hidden="hidden">비밀번호 재설정</button>
-	</form>
+		<button type="button" id="new-pw-btn" class="btn btn-success" hidden="hidden" onclick="test()">비밀번호 재설정</button>
+		
+		<script>
+		function test(){
+				
+			var empCode = $("#empCode").val();
+			opener.test2(empCode);
+			this.close()
+		}
+		</script>
+
 	
 </div>
 </body>

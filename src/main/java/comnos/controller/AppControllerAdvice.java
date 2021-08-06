@@ -2,7 +2,6 @@ package comnos.controller;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
 
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
@@ -12,11 +11,6 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
-import comnos.domain.DepartmentVO;
-import comnos.domain.RankVO;
-import comnos.domain.StoreVO;
-import comnos.service.EmployeeService;
-import comnos.service.StoreService;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j;
 
@@ -24,8 +18,6 @@ import lombok.extern.log4j.Log4j;
 @AllArgsConstructor
 @Log4j
 public class AppControllerAdvice {
-	private EmployeeService service;
-	private StoreService storeService;
 	
 	@InitBinder
 	public void initBinder(WebDataBinder binder) {

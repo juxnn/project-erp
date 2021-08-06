@@ -5,7 +5,7 @@ import lombok.Data;
 @Data
 public class FileVO {
 
-	private Long ID;
+	private Long FILE_ID;
 	private String PRODUCT_NO;
-	private String FILENAME;
+	private String FILE_NAME;
 }

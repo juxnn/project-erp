@@ -10,9 +10,56 @@
 <%@ include file="/WEB-INF/subModules/bootstrapHeader.jsp"%>
 
 <title>Insert title here</title>
+<style>
+html, body{
+	height: 100%;
+}
+.box {
+	display: flex;
+	height: 100%
+}
+.side-box-A {
+	background-color: white;
+	width: 220px;
+	padding-top: 20px;
+	border-right-color: #C0C0C0;
+	border-right-style: solid;
+	border-right-width: 1px;
+	hight: 500px;
+}
+.side-box-name {
+	background-color: #DCDCDC;
+	height: 100px;
+	padding: 30px;
+	font-size: 25px;
+	margin-top: -20px;
+	text-align: center;
+}
+
+.side-box-content {
+	height: 70px;
+	font-size: 20px;
+	padding: 15px;
+	border-top-color: #C0C0C0;
+	border-top-style: solid;
+	border-top-width: 1px;
+	text-align: center;
+}
+.container{
+	margin-top: 50px;
+}
+.title-box {
+	text-align: center;
+	margin-bottom: 50px;
+}
+
+</style>
 
 <script>
 $(document).ready(function(){
+	
+	$("#today-date").text(getToday())
+	
 	$("#product-add-btn").click(function(){
 		var html ="";
 		
@@ -92,26 +139,41 @@ function changeTypeSelect(elem) {
 		selectTo.append(selectOption);
 	})
 }
-
+function getToday(){
+	var date = new Date();
+	var year = date.getFullYear();
+	var month = ("0" + (1 + date.getMonth())).slice(-2);
+	var day = ("0" + date.getDate()).slice(-2);
+	
+	return year + "-" + month + "-" + day;
+}
 
 </script>
 
 </head>
 <body>
 <ma:navbar />
+<ma:navbar-c />
+<div class="box">
+<!-- ********************************* 사이드 박스 ********************************* -->
+<ma:side-box-c2 />
+
 <div class="container">
-	<h1>재고 발주서 작성 폼</h1>
-	<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#product-search-modal">모달버튼</button>
-	
+<!-- ********************************* 타이틀 ********************************* -->
+	<div class="title-box">
+		<h1>외부 발주서 작성 폼</h1>
+	</div>
 	<form method="post" action="${appRoot }/order/add">
 		<table class="table table-striped">
 			<thead>
 			</thead>
 			<tbody id="product-table-body">
 				<tr>
-					<td><input type="number" name='EMP_CODE' readonly="readonly" value="${employee.EMP_CODE }"></td>
-					<td>사원이름: ${employee.EMP_NAME }</td>
-					<td>정보1</td>
+					<td>사원코드: ${pinfo.employee.EMP_CODE }
+						<input type="number" name='EMP_CODE' readonly="readonly" value="${employee.EMP_CODE }" hidden>
+					</td>
+					<td>발주자: ${pinfo.employee.EMP_NAME }</td>
+					<td id="today-date"></td>
 				</tr>
 				<tr>
 					<th>타입</th>
@@ -139,149 +201,8 @@ function changeTypeSelect(elem) {
 		<button id="product-add-btn" type="button">상품 추가</button>
 		<button type="submit">제출</button>
 	</form>	
-	<!-- 모달 다시 도전! -->
-	
-<div class="modal fade" id="product-search-modal" tabindex="-1">
-  <div class="modal-dialog modal-xl">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">상품 조회</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-      상품타입:
-		<select id="type-select" onchange="changeTypeSelect()" class="form-control" name="PRODUCT_TYPE">
-		<option value="">상품타입 선택</option>
-		<c:forEach items="${productTypeList }" var="type" varStatus="status">
-		<option id="${type.PRODUCT_TYPE }" value="${type.PRODUCT_TYPE }">${type.PRODUCT_TYPE }</option>
-		</c:forEach>
-		</select>
-		상품번호:
-		<input id="pno" class="form-control mr-sm-2" type="search" placeholder="상품번호" aria-label="Search"><br>
-		상품이름:
-		<input id="pname" class="form-control mr-sm-2" type="search" placeholder="상품이름" aria-label="Search"><br>
-		<button id="product-search-btn"class="btn btn-outline-success my-2 my-sm-0" type="button">조회</button>
-      
-		<div class="form-group">
-			<br>
-			<h3>상품 List</h3>
-			<form action="" method="post">
-			<table class="table table-striped">
-				<thead>
-					<tr>
-						<th>#</th>
-						<th><input type="checkbox" name="product" value="selectall" onclick="selectAll(this)"></th>
-						<th>상품타입</th>
-						<th>상품번호</th>
-						<th>상품이름</th>
-						<th width='10%' style="word-break:break-all">갯수</th>
-					</tr>
-				</thead>
-				<tbody id="search-modal-body">
-				</tbody>
-			</table>
-			</form>
-			<button id="products-select-btn" type="button" class="btn btn-primary">상품선택</button>
-		</div>
-        <p>Modal body text goes here.</p>
-      </div>
-    
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">상품추가</button>
-      </div>
-    </div>
-  </div>
 </div>
-
-	
-	
 </div>    
-<%-- 상품검색 모달 --%>
-
-<script>
-$(document).ready(function(){
-	//모달에서 검색버튼 실행
-	$("#product-search-btn").click(function(e){
-		
-		$('.removeTr').remove();
-		
-		var type = changeTypeSelect();
-		var pno = $("#pno").val();
-		var pname = $("#pname").val();
-		
-		var data = {PRODUCT_TYPE: type, 
-					PRODUCT_NO: pno,
-					PRODUCT_NAME: pname}
-		
-		var html = "";
-		var request = $.ajax({
-			type: "post",
-			url: "${appRoot}/order/search-product",
-			data: data,
-			success: function(data){
-					console.log("성공");
-			},
-			error:function(){
-				console.log("실패");
-			}
-		});
-		
-		request.done(function(data){
-			
-			console.log(data);
-			//검색값이 있을 경우
-			if(data.length > 0){
-				for(i=0; i<data.length; i++){
-					var x = i + 1
-					html += "<tr class='removeTr'>"
-					html += "<td>" + x + "</td>";
-					html += "<td><input type='checkbox' name='product'></td>";
-					html += "<td>" + data[i].product_TYPE + "</td>";
-					html += "<td>" + data[i].product_NO + "</td>";
-					html += "<td>" + data[i].product_NAME + "</td>";
-					html += "<td><input type='number'></td>"
-					html += "</tr>"
-				}
-			//검색값이 없을 경우
-			}else{
-				$('.removeTr').remove();
-			}
-			//테이블 그려주기
-			$("#search-modal-body").append(html);
-			
-			
-		})
-		
-		
-	})	
-})
-
-//체크박스 전체 선택 함수
-function selectAll(selectAll)  {
-	const checkboxes 
-	     = document.getElementsByName('product');
-	
-	checkboxes.forEach((checkbox) => {
-	  checkbox.checked = selectAll.checked;
-	})
-}
-
-
-//상품 타입 선택시 value 값 정해주기.
-/* function changeTypeSelect(){
-	var typeSelect = document.getElementById("product-type-select");
-	
-	var typeId = typeSelect.options[typeSelect.selectedIndex].value;
-	console.log(typeId);
-	
-	return typeId;
-	
-} */
-</script>
-
 
 
 

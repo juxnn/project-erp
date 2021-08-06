@@ -22,6 +22,8 @@ public class StoreServiceImpl implements StoreService{
 	
 	@Override
 	public void addStore(StoreVO store) {
+		String address = store.getSTORE_ADDRESS() + " " + store.getSTORE_ADDRESS_SUB();
+		store.setSTORE_ADDRESS(address);
 		mapper.insert(store);
 		
 	}

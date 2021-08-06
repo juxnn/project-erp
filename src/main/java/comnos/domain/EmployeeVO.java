@@ -28,6 +28,9 @@ public class EmployeeVO {
 	private String DEPT_NAME;
 	private String RANK_NAME;
 	
+	private String MIN_DATE;
+	private String MAX_DATE;
+	
 	private List<AuthVO> AUTH_LIST;
 	
 }

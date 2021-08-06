@@ -28,6 +28,12 @@ public interface EmployeeMapper {
 	public List<DepartmentVO> getDeptList();
 
 	public List<EmployeeVO> search(EmployeeVO vo);
+
+	public void updatePassword(EmployeeVO vo);
+
+	public int checkEmpCode(long empCode);
+
+	public void edit(EmployeeVO vo);
 	
 	
 	

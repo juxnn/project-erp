@@ -88,44 +88,27 @@ public class ProductServiceImpl implements ProductService{
 			stock.setSTORE_STOCK_EA(0);
 			
 			stockMapper.insert(stock);
-		}
-		
+		}	
 	}
-	
-	@Override
-	public ProductVO get(String pno) {
-		return mapper.read(pno);
-	}
-	
-	@Override
-	public boolean modify(ProductVO product) {
-		return mapper.update(product) == 1;
-	}
-	
-	@Override
-	public boolean remove(String pno) {
-		return mapper.delete(pno) == 1;
-	}
-	
-	
-	
-	//파일 업로드 관련 메소드
 	
 	@Override
 	@Transactional
-	public void register(ProductVO product, MultipartFile file) {
+	public void addProduct(ProductVO product, MultipartFile file) {
 		addProduct(product);
 		
-		if(file!= null && file.getSize()>0) {
+		if(file != null & file.getSize()>0) {
 			FileVO vo = new FileVO();
 			vo.setPRODUCT_NO(product.getPRODUCT_NO());
-			vo.setFILENAME(file.getOriginalFilename());
+			vo.setFILE_NAME(file.getOriginalFilename());
 			
 			fileMapper.insert(vo);
 			upload(product, file);
 		}
 		
 	}
+
+	
+	//파일 업로드 관련 메소드
 	
 	private void upload(ProductVO product, MultipartFile file) {
 		
@@ -147,6 +130,21 @@ public class ProductServiceImpl implements ProductService{
 	}
 	
 	@Override
+	public ProductVO get(String pno) {
+		return mapper.read(pno);
+	}
+	
+	@Override
+	public boolean modify(ProductVO product) {
+		return mapper.update(product) == 1;
+	}
+	
+	@Override
+	public boolean remove(String pno) {
+		return mapper.delete(pno) == 1;
+	}
+	
+	@Override
 	public boolean modify(ProductVO product, MultipartFile file, String fileCheck) {
 		if(file !=null & file.getSize()>0) {
 			//s3 삭제 후 재 업로드
@@ -158,8 +156,7 @@ public class ProductServiceImpl implements ProductService{
 	
 	private void removeFile(ProductVO vo) {
 		
-		String key = vo.getPRODUCT_NO() + "/" + vo.getFILENAME();
-		
+		String key = vo.getPRODUCT_NO() + "/" + vo.getFILE_NAME();
         DeleteObjectRequest deleteObjectRequest = DeleteObjectRequest.builder()
                 .bucket(bucketName)
                 .key(key)

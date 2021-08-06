@@ -31,5 +31,10 @@ public class StoreInServiceImpl implements StoreInService{
 		
 	}
 	
+	@Override
+	public List<OrderVO> getDetail(String ono) {
+		return mapper.getDetail(ono);
+	}
+	
 	
 }

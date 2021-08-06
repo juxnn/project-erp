@@ -9,6 +9,14 @@
 
 <%@ include file="/WEB-INF/subModules/bootstrapHeader.jsp"%>
 
+<script type="text/javascript">
+function test2(empCode){
+	$("#empCode").val(empCode);
+	$("#pw-reset-form").submit();
+}
+
+</script>
+
 <meta charset="UTF-8">
 <title>Insert title here</title>
 </head>
@@ -37,11 +45,21 @@
 				onclick="window.open(this.href, '_blank', 'width=600px,height=600px,toolbars=no,scrollbars=no'); return false;">
 				비밀번호를 잊으셨나요?</a>
 
-<!-- 			<from action="" method="post">
-				<input class="btn btn-warning" type="submit" value="비밀번호 찾기">
-			</from> -->
+ 		<form id="pw-reset-form" action="${appRoot }/employee/pw-reset" method="post">
+			<input type="number" id="empCode" name="empCode" hidden="hidden"/>
+			<input class="btn btn-warning" type="submit" value="비밀번호 찾기" hidden="hidden">
+		</form>
 		</div>
-	</div>	
+	</div>
+	<div>
+		<div>
+			본사 관리부 부장 : 2000010193/123 <br>
+			
+			명동 영업부 부장 : 2010050592<br>
+			
+			창고 물류부 부장 : 2004061053<br>
+		</div>
+	</div>
 </div>
 </body>
 </html>

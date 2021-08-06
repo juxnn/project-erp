@@ -14,7 +14,19 @@
 </head>
 <body>
 <ma:navbar />
-<ma:navbar1 />
+
+<sec:authorize access="hasRole('ROLE_MTEAM')">
+	<ma:navbar1 />
+</sec:authorize>
+
+<sec:authorize access="hasRole('ROLE_STEAM')">
+	<ma:navbar-b />
+</sec:authorize>
+
+<sec:authorize access="hasRole('ROLE_LTEAM')">
+	<ma:navbar-c />
+</sec:authorize>
+
 <div class="container">
 	<h1>메인페이지 HOME 입니다.</h1>
 </div>

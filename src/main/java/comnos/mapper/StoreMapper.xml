@@ -31,6 +31,7 @@
 	
 	<select id="read" resultType="comnos.domain.StoreVO">
 		SELECT 
+			STORE_NO STORE_NO,
 			STORE_NAME STORE_NAME, 
 			STORE_ADDRESS STORE_ADDRESS, 
 			STORE_PHONE STORE_PHONE 

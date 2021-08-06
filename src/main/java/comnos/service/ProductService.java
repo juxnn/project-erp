@@ -15,8 +15,7 @@ public interface ProductService {
 	public boolean modify(ProductVO product);
 	public boolean remove(String pno);
 
-	//파일 업로드	
-	public void register(ProductVO product, MultipartFile file);
+	//파일 수정	
 	public boolean modify(ProductVO product, MultipartFile file, String fileCheck);
 
 	//리스트
@@ -25,4 +24,5 @@ public interface ProductService {
 	public List<ProductVO> getTypeList();
 	
 	public List<ProductVO> getListWithPaging(Criteria cri);
+	public void addProduct(ProductVO product, MultipartFile file);
 }

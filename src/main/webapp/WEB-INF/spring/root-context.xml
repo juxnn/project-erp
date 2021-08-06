@@ -58,10 +58,7 @@
 	
 	
 	<mybatis-spring:scan base-package="comnos.mapper"/>
-	
 	<!-- Root Context: defines shared resources visible to all other web components -->
-	<context:component-scan base-package="comnos.sample"></context:component-scan>
-	
 	<context:component-scan base-package="comnos.service"></context:component-scan>
 	
 	<!-- transaction -->

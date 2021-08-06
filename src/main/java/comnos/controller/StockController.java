@@ -51,14 +51,23 @@ public class StockController {
 	public void list(Model model) {
 		
 		
-		List<StockVO> list = service.getList();
+		//List<StockVO> list = service.getList();
 		List<StoreVO> storeList =storeService.getList();
 		List<ProductVO> productTypeList = productService.getTypeList();
 		
-		model.addAttribute("list", list);
+		//model.addAttribute("list", list);
 		model.addAttribute("storeList", storeList);
 		model.addAttribute("productTypeList", productTypeList);
 	}
+	
+	@PostMapping("/search")
+	public ResponseEntity<List<StockVO>> searchStock(StockVO vo){
+		
+		List<StockVO> list = service.serach(vo);
+		
+		return new ResponseEntity<>(list, HttpStatus.OK);
+	}
+	
 	
 	
 	@GetMapping("/edit")
@@ -88,12 +97,24 @@ public class StockController {
 	@GetMapping("/in-list")
 	public void getInList(Model model) {
 		
-		List<OrderVO> inList = storeInService.getList();
-		List<OrderVO> orderList = storeOrderService.getListWithStatus(1);
+		List<OrderVO> inList = storeInService.getListOrder();
+		//List<OrderVO> orderList = storeOrderService.getListWithStatus(1);
 		
-		model.addAttribute("orderList", orderList);
+		//model.addAttribute("orderList", orderList);
 		model.addAttribute("inList", inList);
 	}
+	
+	
+	@PostMapping("/in-list-detail")
+	public ResponseEntity<List<OrderVO>> getInListDetail(String ono) {
+		
+		List<OrderVO> order = storeInService.getDetail(ono);
+		
+		return new ResponseEntity<>(order, HttpStatus.OK);
+		
+	}
+	
+	
 	
 	@PostMapping("/in-submit")
 	@PreAuthorize("isAuthenticated()")
@@ -125,6 +146,7 @@ public class StockController {
 		return "redirect:/stock/in-list";
 	}
 	
+	
 	@GetMapping("/out-form")
 	@PreAuthorize("isAuthenticated()")
 	@Transactional
@@ -137,12 +159,15 @@ public class StockController {
 		employee = employeeService.read(empCode);
 		model.addAttribute("employee", employee);
 		
-		List<ProductVO> productTypeList = productService.getTypeList();
-		model.addAttribute("productTypeList", productTypeList);
-		
 		cri.setType("1");	//STATUS(1) : 승인된 애들만 가져오기.
 		List<OrderVO> list = storeOrderService.getListWithPaging(cri);
+		List<StoreVO> storeList =storeService.getList();
+		List<ProductVO> productTypeList = productService.getTypeList();
+		
+		
 		model.addAttribute("list", list);
+		model.addAttribute("storeList", storeList);
+		model.addAttribute("productTypeList", productTypeList);		
 	}
 	
 	@PostMapping("/search-product")

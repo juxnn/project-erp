@@ -38,15 +38,24 @@ $(document).ready(function(){
 		})
 		
 		request.done(function(data){
-			console.log(data);
-			//읽은 값을 넣어준다.
-
+			
+			//javascript date format
+			var order_date = new Date(data[0].order_DATE);
+			
+			String.prototype.string = function (len) { var s = '', i = 0; while (i++ < len) { s += this; } return s; };
+			String.prototype.zf = function (len) { return "0".string(len - this.length) + this; };
+			Number.prototype.zf = function (len) { return this.toString().zf(len); };
+			
+			const formatDate = (date)=>{
+				let formatted_date = date.getFullYear() + "-" + (date.getMonth() + 1).zf(2) + "-" + date.getDate().zf(2);
+			 	return formatted_date;
+			}
+			
+			$("#order-detail-date").text(formatDate(order_date));
 			$("#order-detail-no").text(data[0].order_NO);
-			$("#order-detail-date").text(data[0].order_DATE);
-			$("#order-detail-store").text(data[0].store_NO);
-			$("#order-detail-emp").text(data[0].emp_CODE);
-			$("#order-detail-status").text(data[0].order_STATUS);
-				
+			$("#order-detail-store").text(data[0].store_NAME);
+			$("#order-detail-emp").text(data[0].emp_NAME);
+			$("#order-detail-status").text(data[0].status_NAME);
 			$("#order-confirm-value").val(data[0].order_NO);
 			
 			for(i=0; i<data.length; i++){
@@ -60,12 +69,15 @@ $(document).ready(function(){
 			}
 			//테이블 그려주기
 			$("#order-detail-product-list").append(html);
+			
+			
+			if(data[0].order_STATUS==0){
+				$("#order-refuse-btn").removeAttr("hidden", "hidden");
+				$("#order-confirm-btn").removeAttr("hidden", "hidden");
+			}
 		})
-		
 		$("#order-detail-modal").modal('show');
-		
 	})
-	
 	//반려 버튼
 	$("#order-refuse-btn").click(function(){
 		$("#order-status-change").val("2")
@@ -74,13 +86,71 @@ $(document).ready(function(){
 	
 })
 </script>
+<style>
+html, body{
+	height: 100%;
+}
+.box {
+	display: flex;
+	height: 100%;
+}
+.side-box-A {
+	background-color: white;
+	width: 220px;
+	padding-top: 20px;
+	border-right-color: #C0C0C0;
+	border-right-style: solid;
+	border-right-width: 1px;
+	hight: 100%;
+}
+.side-box-name {
+	background-color: #DCDCDC;
+	height: 100px;
+	padding: 30px;
+	font-size: 25px;
+	margin-top: -20px;
+	text-align: center;
+}
+
+.side-box-content {
+	height: 100%;
+	font-size: 20px;
+	padding: 15px;
+	border-top-color: #C0C0C0;
+	border-top-style: solid;
+	border-top-width: 1px;
+	text-align: center;
+}
+.container{
+	margin-top: 50px;
+	height: 100%;
+}
+.title-box {
+	text-align: center;
+	margin-bottom: 50px;
+}
+</style>
 
 </head>
 <body>
 <ma:navbar />
+<sec:authorize access="hasRole('ROLE_STEAM')">
+	<ma:navbar-b />
+</sec:authorize>
+<sec:authorize access="hasRole('ROLE_LTEAM')">
+	<ma:navbar-c />
+</sec:authorize>
+<div class="box">
+<!-- ********************************* 사이드 박스 ********************************* -->
+<sec:authorize access="hasRole('ROLE_STEAM')">
+	<ma:side-box-b1 />
+</sec:authorize>
+<sec:authorize access="hasRole('ROLE_LTEAM')">
+	<ma:side-box-c1 />
+</sec:authorize>
 <div class="container">
 	<h1>발주서 목록(창고->매장)</h1>
-	<table class="table table-striped">
+	<table class="table table-hover">
 		<thead>
 			<tr>
 				<th>#</th>
@@ -92,18 +162,18 @@ $(document).ready(function(){
 		</thead>
 		<tbody>
 			<c:forEach items="${list }" var="order" varStatus="status">
-			<tr class='order-list'>
+			<tr class='order-list' style="cursor:pointer;">
 				<td>${status.count }</td>
 				<td class="order-no">${order.ORDER_NO }</td>				
-				<td>${order.ORDER_STATUS }</td>
-				<td>${order.EMP_CODE }</td>
+				<td>${order.STATUS_NAME }</td>
+				<td>${order.EMP_NAME }</td>
 				<td><fmt:formatDate value="${order.ORDER_DATE}" pattern="yyyy-MM-dd" /></td>
 			</tr>
 			</c:forEach>	
 		</tbody>
 	</table>
 </div>
-</body>
+</div>
 
 <!-- Modal -->
 <div class="modal fade" id="order-detail-modal" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
@@ -116,12 +186,32 @@ $(document).ready(function(){
         </button>
       </div>
       <div class="modal-body">
-      	<div id="order-detail-no">발주 번호:</div>
-      	<div id="order-detail-date">발주 날짜:</div>
-      	<div id="order-detail-store">발주매장:</div>
-      	<div id="order-detail-emp">담당자:</div>
-      	<div id="order-detail-status">처리상태:</div>
-<!-- 	<div id="order-detail-cost">총 가격: <span>값</span></div> -->
+		<table class="table table-bordered">
+		<tbody>
+			<tr>
+		      <td>발주번호</td>
+		      <td id="order-detail-no">Mark</td>
+		    </tr>
+		    <tr>
+		      <td>발주날짜</td>
+		      <td id="order-detail-date">Mark</td>
+		    </tr>
+		    <tr>
+		      <td>발주매장</td>
+		      <td id="order-detail-store">Mark</td>
+		    </tr>
+		    <tr>
+		      <td>담당자</td>
+		      <td id="order-detail-emp">Mark</td>
+		    </tr>
+		    <tr>
+		      <td>처리상태</td>
+		      <td id="order-detail-status">Mark</td>
+		    </tr>
+		</tbody>
+		</table>
+
+
 		<div id="order-detail-products">상품List
 			<div class="form-group">
 				<table class="table table-striped">
@@ -143,15 +233,18 @@ $(document).ready(function(){
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <form id="order-confirm-form" method="post" action="${appRoot}/store-order/status-update">
-        	<input id="order-confirm-value" type="text" readonly="readonly" name="ORDER_NO" >
-        	<input id="order-status-change" type="number" value="1" readonly="readonly" name="ORDER_STATUS">
-	    	<button id="order-refuse-btn" type="button" class="btn btn-warning">발주 반려</button>
-	        <button id="order-confirm-btn" type="submit" class="btn btn-primary">발주 승인</button>
-        </form>
+        <sec:authorize access="hasRole('ROLE_LTEAM')">
+	        <form id="order-confirm-form" method="post" action="${appRoot}/store-order/status-update">
+	        	<input id="order-confirm-value" type="text" readonly="readonly" name="ORDER_NO" hidden>
+	        	<input id="order-status-change" type="number" value="1" readonly="readonly" name="ORDER_STATUS" hidden>
+		    	<button id="order-refuse-btn" type="button" class="btn btn-warning" hidden>발주 반려</button>
+		        <button id="order-confirm-btn" type="submit" class="btn btn-primary" hidden>발주 승인</button>
+	        </form>
+        </sec:authorize>
       </div>
     </div>
   </div>
 </div>
 
+</body>
 </html>

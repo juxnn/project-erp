@@ -7,7 +7,7 @@
 
 <insert id="insert">
 	INSERT INTO PRODUCT_FILE(PRODUCT_NO, FILENAME)
-	VALUES (#{PRODUCT_NO}, #{FILENAME})
+	VALUES (#{PRODUCT_NO}, #{FILE_NAME})
 </insert>
 
 <delete id="deleteByPno">

@@ -4,20 +4,24 @@
     
  <script>
 $(document).ready(function(){
+	$("#today-date").val(getToday());
+	
 	$("#product-search-btn").click(function(){
 	//모달에서'조회' 버튼 클릭시	
 		$('.removeTr').remove();
 		var modalBody = $("#add-product-modal-body");
 
 		var type = changeTypeSelect();
-		var type2 = "0";	//창고(0)의 재고를 조회해서 가져온다.
-		var pno = "";
-		var pname ="";
+		var type2 = 0;	//창고(0)의 재고를 조회해서 가져온다.
+		var pno = $("#pno").val();
+		var pname =$("#pname").val();
 		
 		var data = {type: type,
 					type2: type2,
 					keyword1: pno,
 					keyword2: pname};
+		
+		console.log(data);
 		
 		var searchStockList = "";
 		
@@ -226,23 +230,33 @@ function checkStoreOrder(ono){
 	})
 	
 	request.done(function(data){
-		console.log(data);
-		//읽은 값을 넣어준다.
-
+		
+		//javascript date format
+		var order_date = new Date(data[0].order_DATE);
+		
+		String.prototype.string = function (len) { var s = '', i = 0; while (i++ < len) { s += this; } return s; };
+		String.prototype.zf = function (len) { return "0".string(len - this.length) + this; };
+		Number.prototype.zf = function (len) { return this.toString().zf(len); };
+		
+		const formatDate = (date)=>{
+			let formatted_date = date.getFullYear() + "-" + (date.getMonth() + 1).zf(2) + "-" + date.getDate().zf(2);
+		 	return formatted_date;
+		}
+		
+		$("#order-detail-date").text(formatDate(order_date));		
 		$("#order-detail-no").text(data[0].order_NO);
-		$("#order-detail-date").text(data[0].order_DATE);
 		$("#order-detail-store").text(data[0].store_NO);
-		$("#order-detail-emp").text(data[0].emp_CODE);
-		$("#order-detail-status").text(data[0].order_STATUS);
+		$("#order-detail-emp").text(data[0].emp_NAME);
+		$("#order-detail-status").text(data[0].status_NAME);
 			
 		$("#out-confirm-value").val(data[0].order_NO);
 		
 		for(i=0; i<data.length; i++){
 			html += "<tr class='removeTr'>";
-			html += "<td> -- </td>";
-			html += "<td>상품타입</td>";
+			html += "<td> " + (i+1) + " </td>";
+			html += "<td>" + data[i].product_TYPE + "</td>";
 			html += "<td>" + data[i].product_NO + "</td>";
-			html += "<td> -- </td>";
+			html += "<td>" + data[i].product_NAME + " </td>";
 			html += "<td>" + data[i].order_EA + "</td>";
 			html += "</tr>"
 		}
@@ -252,6 +266,15 @@ function checkStoreOrder(ono){
 	
 	$("#order-detail-modal").modal('show');
 	
+}
+
+function getToday(){
+	var date = new Date();
+	var year = date.getFullYear();
+	var month = ("0" + (1 + date.getMonth())).slice(-2);
+	var day = ("0" + date.getDate()).slice(-2);
+	
+	return year + "-" + month + "-" + day;
 }
 </script>
 

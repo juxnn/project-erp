@@ -1,7 +1,10 @@
 package comnos.controller;
 
 import java.security.Principal;
+import java.util.Date;
 import java.util.List;
+
+import javax.servlet.http.HttpSession;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +22,7 @@ import comnos.domain.DepartmentVO;
 import comnos.domain.EmployeeVO;
 import comnos.domain.RankVO;
 import comnos.domain.StoreVO;
+import comnos.service.ComputeService;
 import comnos.service.EmployeeService;
 import comnos.service.StoreService;
 import lombok.AllArgsConstructor;
@@ -33,6 +37,7 @@ public class EmployeeController {
 
 	private EmployeeService service;
 	private StoreService storeService;
+	private ComputeService computeService;
  
 	@RequestMapping("/login")
 	public void login() {
@@ -40,16 +45,14 @@ public class EmployeeController {
 	
 	@RequestMapping("/register")
 	public void register(Model model) {
-		
-		
+			
 		  List<RankVO> rankList = service.getRankList();
 		  List<DepartmentVO> deptList =service.getDeptList();
 		  List<StoreVO> storeList = storeService.getList();
 		  
 		  model.addAttribute("storeList", storeList); model.addAttribute("rankList",
 		  rankList); model.addAttribute("deptList", deptList);
-		 
-		
+	
 	}
 	
 	@PostMapping("/register")
@@ -58,15 +61,24 @@ public class EmployeeController {
 		String address1 = vo.getEMP_ADDRESS();
 		String address2 = vo.getEMP_ADDRESS_SUB();
 		
-		vo.setEMP_ADDRESS(address1+ address2);
+		vo.setEMP_ADDRESS(address1+ " " +address2);
 		
 		boolean ok = service.insert(vo);
 		if (ok) {
 			return "redirect:/employee/list";
 		} else {
-			return "redirect:/member/register?error";
+			return "redirect:/employee/register?error";
 		}
+	}
+	
+	@PostMapping("/mime-code")
+	public ResponseEntity<Long> mimeEmpCode(Date empDate) {
 		
+		log.info(empDate);
+		
+		long empCode = computeService.mimeEmpCode(empDate);
+		
+		return new ResponseEntity<>(empCode, HttpStatus.OK);
 	}
 	
 	@GetMapping("/info")
@@ -78,26 +90,70 @@ public class EmployeeController {
 		model.addAttribute("employee", employee);
 	}
 	
+	@PostMapping("detail")
+	public ResponseEntity<EmployeeVO> getEmpDetail(long employeeNo) {
+		
+		EmployeeVO employee = service.read(employeeNo);
+		log.info(employee.getEMP_BIRTH());
+		log.info("원준");
+		/*
+		 * SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+		 * simpleDateFormat.format(employee.getEMP_BIRTH());
+		 */
+		
+		return new ResponseEntity<>(employee, HttpStatus.OK);
+	}
+	
+	
 	@GetMapping("/list")
 	public void getList(Model model) {
 		
 		List<DepartmentVO> deptList = service.getDeptList();
 		List<StoreVO> storeList =storeService.getList();
 		List<RankVO> rankList = service.getRankList();		
-		//List<EmployeeVO> list = service.getList();
 		
 		model.addAttribute("deptList", deptList);
 		model.addAttribute("storeList", storeList);
 		model.addAttribute("rankList", rankList);
-		//model.addAttribute("list", list);
+	}
+	
+	@PostMapping("/modify")
+	public void getModify(Model model, Long empCode) {
+		
+		  List<RankVO> rankList = service.getRankList();
+		  List<DepartmentVO> deptList =service.getDeptList();
+		  List<StoreVO> storeList = storeService.getList();
+		  EmployeeVO employee = service.read(empCode);
+		  
+		  model.addAttribute("employee", employee);
+		  model.addAttribute("storeList", storeList);
+		  model.addAttribute("rankList", rankList);
+		  model.addAttribute("deptList", deptList);		
 	}
 	
 	@PostMapping("/search")
 	public ResponseEntity<List<EmployeeVO>> searchEmployee(EmployeeVO vo) {
 	
 		List<EmployeeVO> list = service.search(vo);
+
 		return new ResponseEntity<>(list, HttpStatus.OK);
 	}
+	
+	@GetMapping("/resign")
+	@PreAuthorize("isAuthenticated()")
+	public void resignEmployee(Model model) {
+	
+		List<DepartmentVO> deptList = service.getDeptList();
+		List<StoreVO> storeList =storeService.getList();
+		List<RankVO> rankList = service.getRankList();		
+
+		model.addAttribute("deptList", deptList);
+		model.addAttribute("storeList", storeList);
+		model.addAttribute("rankList", rankList);
+	}
+	
+	
+	
 
 	@GetMapping("/findpw")
 	public void findpw() {
@@ -106,22 +162,22 @@ public class EmployeeController {
 	//인증번호 발송
 	@PostMapping("/sendemail")
 	@ResponseBody
-	public ResponseEntity<String> mailCerti(String empCode, String email){
+	public ResponseEntity<String> mailCerti(String empCode, String email, HttpSession session){
 	
 		long empCodeL = Long.parseLong(empCode);
 		EmployeeVO employee = service.read(empCodeL);
 		
 		if(employee == null) {
-			
 			return new ResponseEntity<>("noCode", HttpStatus.OK);
-			
 		}else {
 			
 			String empEmail = employee.getEMP_EMAIL();
-			
 			if(empEmail.equals(email)) {
-				service.mailSend(email);
-				//시간을 측정
+				int certiNum = service.getCertiNum();	//인증번호를 가져온다.
+				session.setAttribute("certiNum", certiNum);
+				
+				service.mailSend(email, certiNum);
+				
 				return new ResponseEntity<>("success", HttpStatus.OK);
 				
 			}else {
@@ -129,6 +185,37 @@ public class EmployeeController {
 			}	
 		}
 	}
+	
+	@PostMapping("/certi-check")
+	public ResponseEntity<String> certiCheck(Integer certiNum, HttpSession session){
+		
+		if( certiNum.equals(session.getAttribute("certiNum"))) {
+			return new ResponseEntity<>("correct", HttpStatus.OK);			
+		}else {
+			return new ResponseEntity<>("wrong", HttpStatus.OK);
+		}
+	}
+	
+	@PostMapping("/pw-reset")
+	public String postPwReset(long empCode, RedirectAttributes rttr) {
+		
+		EmployeeVO employee = service.read(empCode);
+		rttr.addFlashAttribute("employee", employee);
+		log.info(employee);
+		log.info("원준");
+		return "redirect:/employee/pw-reset";
+	}
+	
+	
+	@GetMapping("/pw-reset")
+	public void getPwReset() {}
+	
+	@PostMapping("/pw-change")
+	public String changePw(EmployeeVO vo) {
+		service.updatePassword(vo);
+		return "redirect:/main/home";
+	}
+	
 	
 	@GetMapping("/test")
 	@PreAuthorize("isAuthenticated()")
@@ -158,6 +245,19 @@ public class EmployeeController {
 		model.addAttribute("securepw", securePw);
 		
 	}
+	
+	@PostMapping("/edit")
+	public String editEmployee(EmployeeVO vo) {
+		
+		String address1 = vo.getEMP_ADDRESS();
+		String address2 = vo.getEMP_ADDRESS_SUB();
+		
+		vo.setEMP_ADDRESS((address1+ " " +address2).trim());
+		service.edit(vo);
+		return "redirect:/employee/list";
+	}
+	
+
 	
 	
 	

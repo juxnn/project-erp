@@ -24,6 +24,11 @@ public class StockServiceImpl implements StockService{
 	}
 	
 	@Override
+	public List<StockVO> serach(StockVO vo) {
+		return mapper.search(vo);
+	}
+	
+	@Override
 	public void update(StockVO stock) {	
 		mapper.update(stock);	
 	}

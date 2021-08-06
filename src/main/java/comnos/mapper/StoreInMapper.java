@@ -14,4 +14,6 @@ public interface StoreInMapper {
 	
 	int checkOrderNo(String orderNo);
 
+	List<OrderVO> getDetail(String ono);
+
 }

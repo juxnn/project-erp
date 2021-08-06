@@ -11,4 +11,6 @@ public interface StoreInService {
 	List<OrderVO> getListOrder();
 
 	List<OrderVO> getList();
+
+	List<OrderVO> getDetail(String ono);
 }

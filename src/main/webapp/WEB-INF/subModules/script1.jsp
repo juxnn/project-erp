@@ -1,89 +1,124 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<!-- 캘린더 -->
-<script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-<script src="//code.jquery.com/ui/1.8.18/jquery-ui.min.js"></script>
 
 <!-- 카카오 주소 API -->
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 
+<!--  달력 -->
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
 <script>
-/* 캘린더 위젯 적용 */
-	
-	/* 설정 */
-	const config = {
-			dateFormat: 'yy-mm-dd',
-			showOn: "button",
-			buttonText: "날짜선택",
-		prevText: '이전 달',
-		nextText: '다음 달',
-		monthNames: ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'],
-		monthNamesShort: ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'],
-		dayNames: ['일','월','화','수','목','금','토'],
-		dayNamesShort: ['일','월','화','수','목','금','토'],
-		dayNamesMin: ['일','월','화','수','목','금','토'],
-		yearSuffix: '년',
-	changeMonth: true,
-	changeYear: true	
-	}
-	
-	/* 캘린더 */
-	$(function() {
-		$( "input[name='EMP_DATE']" ).datepicker(config);
+
+$(function () {
+	$('#datetimepicker1').datetimepicker({ 
+		format: 'YYYY-MM-DD',
+		viewMode: 'years'
+	});
+	$('#datetimepicker2').datetimepicker({  
+		format: 'YYYY-MM-DD',
+		viewMode: 'years',
+		useCurrent: false
 	});
 	
-	$(function() {
-		$( "input[name='EMP_BIRTH']" ).datepicker(config);
-	});
+/* 	$("#datetimepicker1").on("change.datetimepicker", function (e) {
+		$('#datetimepicker2').datetimepicker('minDate', e.date);
+		});
+		
+	$("#datetimepicker2").on("change.datetimepicker", function (e) {
+		$('#datetimepicker1').datetimepicker('maxDate', e.date);
+	}); */
 	
+	$("#make-code-btn").click(function(){	
+			
+			var empDate = $("#EMP_DATE").val();
+			var data = {empDate: empDate}
+			
+			$.ajax({
+				type: "post",
+				url: "${appRoot}/employee/mime-code",
+				data: data,
+				success: function(data){
+					console.log("성공");
+					$("#emp-code-input").val(data);
+				},
+				error: function(){
+					console.log("실패");
+				}	
+			})
+		})
+		
+		var passwordConfirm = false;
+		
+		$("#signup-pw, #signup-pwchk").keyup(function() {
+			var pw1 = $("#signup-pw").val();
+			var pw2 = $("#signup-pwchk").val();
+			passwordConfirm = false;
+			
+			if (pw1 != pw2) {
+				$("#password-message").text("패스워드가 일치하지 않습니다.");
+			} else {
+				if (pw1 == "") {
+			
+				} else {
+					passwordConfirm = true;
+					$("#password-message").empty();
+				}
+				
+			}
+		});
+		
+		
+		
+	 
+});
+
+/* 카카오 주소 API */
+function sample6_execDaumPostcode() {
+	new daum.Postcode({
+	    oncomplete: function(data) {
+	        // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
 	
-	/* 카카오 주소 API */
-	function sample6_execDaumPostcode() {
-	        new daum.Postcode({
-	            oncomplete: function(data) {
-	                // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
+	        // 각 주소의 노출 규칙에 따라 주소를 조합한다.
+	        // 내려오는 변수가 값이 없는 경우엔 공백('')값을 가지므로, 이를 참고하여 분기 한다.
+	        var addr = ''; // 주소 변수
+	        var extraAddr = ''; // 참고항목 변수
 	
-	                // 각 주소의 노출 규칙에 따라 주소를 조합한다.
-	                // 내려오는 변수가 값이 없는 경우엔 공백('')값을 가지므로, 이를 참고하여 분기 한다.
-	                var addr = ''; // 주소 변수
-	                var extraAddr = ''; // 참고항목 변수
+	        //사용자가 선택한 주소 타입에 따라 해당 주소 값을 가져온다.
+	        if (data.userSelectedType === 'R') { // 사용자가 도로명 주소를 선택했을 경우
+	            addr = data.roadAddress;
+	        } else { // 사용자가 지번 주소를 선택했을 경우(J)
+	            addr = data.jibunAddress;
+	        }
 	
-	                //사용자가 선택한 주소 타입에 따라 해당 주소 값을 가져온다.
-	                if (data.userSelectedType === 'R') { // 사용자가 도로명 주소를 선택했을 경우
-	                    addr = data.roadAddress;
-	                } else { // 사용자가 지번 주소를 선택했을 경우(J)
-	                    addr = data.jibunAddress;
-	                }
-	
-	                // 사용자가 선택한 주소가 도로명 타입일때 참고항목을 조합한다.
-	                if(data.userSelectedType === 'R'){
-	                    // 법정동명이 있을 경우 추가한다. (법정리는 제외)
-	                    // 법정동의 경우 마지막 문자가 "동/로/가"로 끝난다.
-	                    if(data.bname !== '' && /[동|로|가]$/g.test(data.bname)){
-	                        extraAddr += data.bname;
-	                    }
-	                    // 건물명이 있고, 공동주택일 경우 추가한다.
-	                    if(data.buildingName !== '' && data.apartment === 'Y'){
-	                        extraAddr += (extraAddr !== '' ? ', ' + data.buildingName : data.buildingName);
-	                    }
-	                    // 표시할 참고항목이 있을 경우, 괄호까지 추가한 최종 문자열을 만든다.
-	                    if(extraAddr !== ''){
-	                        extraAddr = ' (' + extraAddr + ')';
-	                    }
-	                    // 조합된 참고항목을 해당 필드에 넣는다.
-	                    document.getElementById("sample6_extraAddress").value = extraAddr;
-	                
-	                } else {
-	                    document.getElementById("sample6_extraAddress").value = '';
-	                }
-	
-	                // 우편번호와 주소 정보를 해당 필드에 넣는다.
-	                document.getElementById('sample6_postcode').value = data.zonecode;
-	                document.getElementById("sample6_address").value = addr;
-	                // 커서를 상세주소 필드로 이동한다.
-	                document.getElementById("sample6_detailAddress").focus();
+	        // 사용자가 선택한 주소가 도로명 타입일때 참고항목을 조합한다.
+	        if(data.userSelectedType === 'R'){
+	            // 법정동명이 있을 경우 추가한다. (법정리는 제외)
+	            // 법정동의 경우 마지막 문자가 "동/로/가"로 끝난다.
+	            if(data.bname !== '' && /[동|로|가]$/g.test(data.bname)){
+	                extraAddr += data.bname;
 	            }
-	        }).open();
+	            // 건물명이 있고, 공동주택일 경우 추가한다.
+	            if(data.buildingName !== '' && data.apartment === 'Y'){
+	                extraAddr += (extraAddr !== '' ? ', ' + data.buildingName : data.buildingName);
+	            }
+	            // 표시할 참고항목이 있을 경우, 괄호까지 추가한 최종 문자열을 만든다.
+	            if(extraAddr !== ''){
+	                extraAddr = ' (' + extraAddr + ')';
+	            }
+	            // 조합된 참고항목을 해당 필드에 넣는다.
+	            document.getElementById("sample6_extraAddress").value = extraAddr;
+	        
+	        } else {
+	            document.getElementById("sample6_extraAddress").value = '';
+	        }
+	
+	        // 우편번호와 주소 정보를 해당 필드에 넣는다.
+	        document.getElementById('sample6_postcode').value = data.zonecode;
+	        document.getElementById("sample6_address").value = addr;
+	        // 커서를 상세주소 필드로 이동한다.
+	        document.getElementById("sample6_detailAddress").focus();
 	    }
+	}).open();
+}
 
 </script>

@@ -81,6 +81,12 @@
 			<if test="EMP_CODE != null and !EMP_CODE.equals('')">
 				E.EMP_CODE LIKE CONCAT ('%', #{EMP_CODE}, '%') AND
 			</if>
+			<if test ="MIN_DATE != null and ! MIN_DATE.equals('') and MAX_DATE != null and ! MAX_DATE.equals('')" >
+				<!-- DATE(E.EMP_DATE) BETWEEN #{MIN_DATE} AND #{MAX_DATE} AND -->
+				<![CDATA[
+					E.EMP_DATE >= #{MIN_DATE} AND E.EMP_DATE <= #{MAX_DATE} AND
+				]]>
+			</if>
 				E.CHECK_RESIGNATION = #{CHECK_RESIGNATION}
 		ORDER BY E.RANK_NO ASC
 	</select>
@@ -111,8 +117,23 @@
 			EMP_EMAIL = #{EMP_EMAIL},
 			EMP_PASSWORD = #{EMP_PASSWORD},
 			CHECK_RESIGNATION = #{CHECK_RESIGNATION}
-		WHERE EMP_CDOE = #{EMP_CODE}
+		WHERE EMP_CODE = #{EMP_CODE}
 	</update>
+	
+	<update id="updatePassword">
+		UPDATE EMPLOYEE
+		SET	EMP_PASSWORD = #{EMP_PASSWORD}
+		WHERE EMP_CODE = #{EMP_CODE}
+	</update>
+	
+	
+	<select id="checkEmpCode" resultType="Integer">
+		SELECT EXISTS
+			( SELECT * FROM EMPLOYEE
+			  WHERE EMP_CODE = #{empCode})
+		as isChk;
+	</select>
+	
 
 	<insert id="insert">
 		INSERT INTO EMPLOYEE (
@@ -159,6 +180,8 @@
 			E.EMP_EMAIL EMP_EMAIL, 
 			E.EMP_PASSWORD EMP_PASSWORD, 
 			E.CHECK_RESIGNATION CHECK_RESIGNATION,
+			D.DEPT_NAME DEPT_NAME,
+			R.RANK_NAME RANK_NAME,
 			A.AUTH AUTH
 		FROM
 			EMPLOYEE E
@@ -166,6 +189,10 @@
 			EMPLOYEE_AUTH A ON E.EMP_CODE = A.EMP_CODE
 		LEFT JOIN
 			STORE S ON E.STORE_NO = S.STORE_NO
+		LEFT JOIN
+			DEPARTMENT D ON E.DEPT_NO = D.DEPT_NO
+		LEFT JOIN
+			EMPLOYEE_RANK R ON E.RANK_NO = R.RANK_NO		
 		WHERE
 			E.EMP_CODE = #{EMP_CODE}
 	</select>
@@ -176,7 +203,9 @@
 		  	<result property="STORE_NO" column="STORE_NO" />
 		  	<result property="STORE_NAME" column="STORE_NAME" />
 		  	<result property="RANK_NO" column="RANK_NO" />
+		  	<result property="RANK_NAME" column="RANK_NAME" />
 		  	<result property="DEPT_NO" column="DEPT_NO" />
+		  	<result property="DEPT_NAME" column="DEPT_NAME" />
 		  	<result property="EMP_BIRTH" column="EMP_BIRTH" />
 		  	<result property="EMP_PHONE" column="EMP_PHONE" />
 		  	<result property="EMP_ADDRESS" column="EMP_ADDRESS" />
@@ -191,6 +220,23 @@
 	 		<result property="AUTH" column="AUTH" />
 	 </resultMap>
 
+
+	<update id="edit">
+		UPDATE EMPLOYEE
+		SET	
+			EMP_SEX = #{EMP_SEX},
+			STORE_NO = #{STORE_NO},
+			RANK_NO = #{RANK_NO},
+			DEPT_NO = #{DEPT_NO},
+			EMP_BIRTH =#{EMP_BIRTH}, 
+			EMP_PHONE = #{EMP_PHONE},
+			EMP_EMAIL = #{EMP_EMAIL},
+			<if test="!EMP_ADDRESS.equals('')">
+				EMP_ADDRESS = #{EMP_ADDRESS},
+			</if>
+			CHECK_RESIGNATION = #{CHECK_RESIGNATION}
+		WHERE EMP_CODE = #{EMP_CODE}
+	</update>
 
 
 </mapper>
