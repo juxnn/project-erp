@@ -63,10 +63,10 @@ $(document).ready(function(){
 			data: data,
 			success: function(data){
 				if(data == "correct"){
-					console.log("성공");				
+					console.log("인증번호가 같아서 성공");				
 					$("#new-pw-btn").removeAttr('hidden');
 				}else if(data == "wrong"){
-					console.log("실패")
+					console.log("인증번호가 달라서 실패")
 				}
 			},
 			error: function(){
@@ -78,10 +78,7 @@ $(document).ready(function(){
 			console.log(data);
 		}) 
 		
-		
-		
 	})
-	
 	
 })
 </script>

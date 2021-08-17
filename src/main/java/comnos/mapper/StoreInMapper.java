@@ -10,7 +10,7 @@ public interface StoreInMapper {
 
 	List<OrderVO> getList();
 	
-	List<OrderVO> getListOrder();
+	List<OrderVO> getListOrder(int storeNo);
 	
 	int checkOrderNo(String orderNo);
 

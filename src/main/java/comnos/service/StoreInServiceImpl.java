@@ -16,8 +16,8 @@ public class StoreInServiceImpl implements StoreInService{
 	private StoreInMapper mapper;
 	
 	@Override
-	public List<OrderVO> getListOrder() {
-		return mapper.getListOrder();
+	public List<OrderVO> getListOrder(int storeNo) {
+		return mapper.getListOrder(storeNo);
 	}
 	
 	@Override

@@ -40,6 +40,7 @@ $(function () {
 				success: function(data){
 					console.log("성공");
 					$("#emp-code-input").val(data);
+					alert("사번이 생성되었습니다.");
 				},
 				error: function(){
 					console.log("실패");

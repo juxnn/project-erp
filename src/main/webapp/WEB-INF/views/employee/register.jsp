@@ -10,7 +10,7 @@
 <%@ include file="/WEB-INF/subModules/script1.jsp"%>
 <%@ include file="/WEB-INF/subModules/bootstrapHeader.jsp"%>
 
-<title>Insert title here</title>
+<title>사원등록 Page</title>
 <style>
 html, body{
 	height: 100%;
@@ -68,7 +68,12 @@ html, body{
 	margin-left: 380px;
 	align-content: center;
 }
-
+#signup-btn1 {
+	display: inline-block;
+}
+#password-message {
+	display: inline-block;
+}
 </style>
 
 </head>
@@ -112,7 +117,6 @@ html, body{
 			<input type="password" class="form-control"  id="signup-pw" name="EMP_PASSWORD" placeholder="비밀번호를 입력하세요.">
 		</div>
 
-		<small id="password-message" class="form-text text-danger"></small>
 		<div class="input-group mb-3">
 			<div class="input-group-prepend">
 				<span class="input-group-text" id="basic-addon1">비밀번호 확인</span>
@@ -218,8 +222,11 @@ html, body{
 			</div>
 			<input type="text" class="form-control" id="sample6_detailAddress" placeholder="상세주소" name="EMP_ADDRESS_SUB">
 		</div>
-		<input type="number" name="CHECK_RESIGNATION" value="1" hidden>
+		<input type="number" name="CHECK_RESIGNATION" value="1" hidden="hidden">
+
 		<button id="signup-btn1" type="submit" class="btn btn-primary">사원등록</button>
+		<small id="password-message" class="form-text text-danger"></small>
+		
 	</form>
 </div>
 </div>

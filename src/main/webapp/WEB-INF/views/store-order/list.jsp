@@ -156,7 +156,7 @@ html, body{
 				<th>#</th>
 				<th>발주 번호</th>
 				<th>처리 상태</th>
-				<th>담당자</th>
+				<th>해당매장</th>
 				<th>발주 날짜</th>
 			</tr>
 		</thead>
@@ -166,7 +166,7 @@ html, body{
 				<td>${status.count }</td>
 				<td class="order-no">${order.ORDER_NO }</td>				
 				<td>${order.STATUS_NAME }</td>
-				<td>${order.EMP_NAME }</td>
+				<td>${order.STORE_NAME }</td>
 				<td><fmt:formatDate value="${order.ORDER_DATE}" pattern="yyyy-MM-dd" /></td>
 			</tr>
 			</c:forEach>	
@@ -222,7 +222,6 @@ html, body{
 							<th>상품번호</th>
 							<th>상품이름</th>
 							<th>갯수</th>
-<!-- 						<th>구입가격</th> -->
 						</tr>
 					</thead>
 					<tbody id="order-detail-product-list">

@@ -95,12 +95,15 @@ public class StockController {
 	}
 	
 	@GetMapping("/in-list")
-	public void getInList(Model model) {
+	public void getInList(Principal principal, Model model) {
 		
-		List<OrderVO> inList = storeInService.getListOrder();
-		//List<OrderVO> orderList = storeOrderService.getListWithStatus(1);
+		long empCode = Long.parseLong( principal.getName() );
+		EmployeeVO employee = employeeService.read(empCode);
 		
-		//model.addAttribute("orderList", orderList);
+		int storeNo = employee.getSTORE_NO();
+		
+		List<OrderVO> inList = storeInService.getListOrder(storeNo);
+
 		model.addAttribute("inList", inList);
 	}
 	

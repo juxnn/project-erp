@@ -72,8 +72,6 @@ function searchStock(){
 			PRODUCT_NAME: pname
 	}
 	
-	console.log(data);
-	
 	var request = $.ajax({
 		type: "post",
 		url: "${appRoot}/stock/search",
@@ -155,7 +153,7 @@ function searchStock(){
 	<button id="search-stock-btn" type="button" class="btn btn-secondary" onclick="searchStock()">재고 검색</button>
 </div>
 </div>		
-	<table class="table table-striped">
+	<table class="table table-hover">
 		<thead>
 			<tr>
 				<th>#</th>
@@ -165,14 +163,6 @@ function searchStock(){
 			</tr>
 		</thead>
 		<tbody id="stock-table-body">
-<%-- 			<c:forEach items="${list }" var="stock" varStatus="status">
-			<tr>
-				<td>${status.count }</td>
-				<td>${storeList[stock.STORE_NO].STORE_NAME } (${stock.STORE_NO })</td>
-				<td>${stock.PRODUCT_NO }</td>
-				<td>${stock.STORE_STOCK_EA }</td>
-			</tr>
-			</c:forEach>	 --%>
 		</tbody>
 	</table>
 </div>

@@ -27,9 +27,9 @@ public class AppControllerAdvice {
 	            dateFormat, true));
 	}
 	
-	@ModelAttribute
-	public void lists(Model model) {
-		log.info("model select.....");
+//	@ModelAttribute
+//	public void lists(Model model) {
+//		log.info("model select.....");
 //		List<RankVO> rankList = service.getRankList();
 //		List<DepartmentVO> deptList = service.getDeptList();
 //		List<StoreVO> storeList =storeService.getList();
@@ -37,5 +37,5 @@ public class AppControllerAdvice {
 //		model.addAttribute("storeList", storeList);
 //		model.addAttribute("rankList", rankList);
 //		model.addAttribute("deptList", deptList);
-	}
+//	}
 }

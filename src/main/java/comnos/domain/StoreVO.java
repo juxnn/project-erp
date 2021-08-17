@@ -10,5 +10,6 @@ public class StoreVO {
 	private String STORE_ADDRESS;
 	private String STORE_ADDRESS_SUB;
 	private String STORE_PHONE;
+	private Integer EMP_COUNT;
 	
 }

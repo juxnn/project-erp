@@ -9,6 +9,11 @@ import comnos.domain.ProductVO;
 
 public interface ProductService {
 
+	
+	//COMPUTE
+	public double calculateProfit(ProductVO product);
+	public double calculateProfitAverage();
+	
 	//CRUD
 	public void addProduct(ProductVO product);
 	public ProductVO get(String pno);

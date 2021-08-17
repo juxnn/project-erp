@@ -36,23 +36,7 @@
           <a class="dropdown-item" href="${appRoot }/stock/list">재고조회</a>
           <a class="dropdown-item" href="${appRoot }/stock/edit">제품조회</a>
           <a class="dropdown-item" href="${appRoot }/stock/in-list">입고조회</a>
-          <a class="dropdown-item" href="${appRoot }/stock/in-form">입고등록</a>
-          <a class="dropdown-item" href="">(x)출고조회(매장-고객)</a>
-          <a class="dropdown-item" href="">(x)출고등록(매장-고객)</a>
-          
-          <div class="dropdown-divider"></div>
-          <a class="dropdown-item" href="#">Something else here</a>
-        </div>
-      </li>
-      <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          <i class="fas fa-list"></i>
-          고객주문관리
-        </a>
-        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-          <a class="dropdown-item" href="${appRoot }/customer/list">고객 조회 + 등록</a>
-          <a class="dropdown-item" href="">(x)고객주문 등록</a>
-          <a class="dropdown-item" href="">(x)고객주문 조회</a>
+          <a class="dropdown-item" href="${appRoot }/stock/in-form">입고등록</a>          
           <div class="dropdown-divider"></div>
           <a class="dropdown-item" href="#">Something else here</a>
         </div>
@@ -71,6 +55,7 @@
   </sec:authorize>
   
   <sec:authorize access="isAuthenticated()">
+  	  <div>${pinfo.employee.DEPT_NAME } ${pinfo.employee.EMP_NAME }님(${pinfo.employee.RANK_NAME }) 안녕하세요</div>
 	  <form action="${appRoot }/logout" method="post">
 	  	<input type="submit" class="btn btn-outline-secondary" value="로그아웃">
 	  </form>

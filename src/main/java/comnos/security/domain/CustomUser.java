@@ -1,9 +1,7 @@
 package comnos.security.domain;
 
-import java.util.Collection;
 import java.util.stream.Collectors;
 
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import comnos.domain.EmployeeVO;
@@ -28,6 +26,7 @@ public class CustomUser extends User{
 		super(vo.getEMP_CODE() + "", vo.getEMP_PASSWORD(), vo.getAUTH_LIST().stream()
 				.map(auth -> new SimpleGrantedAuthority(auth.getAUTH()))
 				.collect(Collectors.toList()));
+		
 		employee = vo;
 	}
 	

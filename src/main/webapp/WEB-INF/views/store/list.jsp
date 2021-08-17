@@ -127,11 +127,11 @@ function mapAddress(storeAddress){
 			$("#modal-store-no").text(data.store_NO);
 			$("#modal-store-address").text(data.store_ADDRESS);
 			$("#modal-store-phone").text(data.store_PHONE);
+			$("#modal-emp-count").text(data.emp_COUNT);
 		
 			var showMap = mapAddress(data.store_ADDRESS);
 			
 			$('#store-detail-modal').modal('show');
-//			$("#map").removeAttr("hidden");
 			$("#store-detail-modal").on("shown.bs.modal", function() {
 				showMap.relayout();
 				showMap.setCenter(coords_position); //넣어줘야하는데
@@ -196,27 +196,23 @@ function mapAddress(storeAddress){
 		  <tbody>
 		  	<tr>
 		      <td>매장넘버</td>
-		      <td id="modal-store-no">${store.STORE_NAME } (${store.STORE_NO })</td>
+		      <td id="modal-store-no"></td>
 		    </tr>
 		    <tr>
 		      <td>매장명</td>
-		      <td id="modal-store-name">${store.STORE_NAME } (${store.STORE_NO })</td>
-		    </tr>
-		   	<tr>
-		      <td>담당자</td>
-		      <td id="modal-store-emp">홍길동</td>
+		      <td id="modal-store-name"></td>
 		    </tr>
 		    <tr>
 		      <td>주소</td>
-		      <td id="modal-store-address">${store.STORE_ADDRESS }</td>
+		      <td id="modal-store-address"></td>
 		    </tr>
 		    <tr>
 		      <td>연락처</td>
-		      <td id="modal-store-phone">${store.STORE_PHONE })</td>
+		      <td id="modal-store-phone"></td>
 		    </tr>
 		    <tr>
 		      <td>총 사원 수</td>
-		      <td id="modal-store-count">100</td>
+		      <td id="modal-emp-count"></td>
 		    </tr>
 		  </tbody>
 		</table>

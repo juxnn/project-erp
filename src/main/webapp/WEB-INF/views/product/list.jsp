@@ -14,9 +14,13 @@
 
 
 
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
 <script>
 $(document).ready(function(){
+	
+	var productProfit = 0;
+	var averageProfit = 0;
+	
 // ********************** table 클릭시 동작 **********************
 	$("#product-table-body").on("click", ".productTr", function(){
 		
@@ -48,6 +52,9 @@ $(document).ready(function(){
 			$("#modal-product-out-price").text(data.product_OUT_PRICE);
 			$("#modal-product-detail").text(data.product_DETAIL);
 			
+			productProfit = data.product_PROFIT;
+			averageProfit = data.average_PROFIT;
+			
 			var html = "";
 			
 			if(data.file_NAME){
@@ -63,10 +70,35 @@ $(document).ready(function(){
 			$("#modal-product-img").append(html);
 
 
+			new Chart(document.getElementById("bar-chart"), {
+			    type: 'bar',
+			    data: {
+			      labels: ["평균 수익률", "상품 수익률"],
+			      datasets: [
+			        {
+			          label: "수익률(%)",
+			          backgroundColor: ["#3e95cd", "#3cba9f"],
+			          data: [averageProfit, productProfit, 0]
+					}
+			      ]
+			    },
+			    options: {
+			      legend: { display: false },
+			      title: {
+			        display: true,
+			        text: '컴노스 상품별 수익률 계산 그래프'
+			      }
+			    }
+			});
+			
+			
 			$('#product-detail-modal').modal('show');
 		})
 	})
+	
+
 })
+
 
 
 </script>
@@ -179,16 +211,23 @@ html, body{
 		      <td id="modal-product-type"></td>
 		    </tr>
 		    <tr>
+		      <td>상세정보</td>
+		    <td id="modal-product-detail"></td>
+		    </tr>
+		    <tr>
 		      <td>원가</td>
-		      <td id="modal-product-in-price">type</td>
+		      <td id="modal-product-in-price"></td>
 		    </tr>
 		    <tr>
 		      <td>판매가</td>
-		      <td id="modal-product-out-price">type</td>
+		      <td id="modal-product-out-price"></td>
 		    </tr>
 		    <tr>
-		      <td>상세정보</td>
-		    <td id="modal-product-detail">type</td>
+		      <td colspan="2">
+		   
+				<canvas id="bar-chart" width="200" height="30"></canvas>
+		      
+		      </td>
 		    </tr>
 		  </tbody>
 		</table>

@@ -48,6 +48,34 @@ public class ProductServiceImpl implements ProductService{
 	private StockMapper stockMapper;
 	
 	
+	
+	@Override
+	public double calculateProfit(ProductVO product) {
+		
+		double inPrice = product.getPRODUCT_IN_PRICE();
+		double outPrice = product.getPRODUCT_OUT_PRICE();
+		
+		double profit = (outPrice - inPrice) / inPrice;
+		
+		return profit*100;
+	}
+	@Override
+	public double calculateProfitAverage() {
+	
+		double totalProfit = 0;
+		double profitAverage = 0;
+		
+		List<ProductVO> list = mapper.getList();
+		
+		for(ProductVO product: list) {
+			totalProfit += calculateProfit(product);
+		}
+		
+		profitAverage = totalProfit / list.size();
+		return profitAverage;
+	}
+	
+	
 	public ProductServiceImpl() {
 		this.bucketName = "juxn1";
 		this.profileName = "spring1";	
@@ -131,7 +159,11 @@ public class ProductServiceImpl implements ProductService{
 	
 	@Override
 	public ProductVO get(String pno) {
-		return mapper.read(pno);
+		ProductVO product= mapper.read(pno);
+		
+		product.setPRODUCT_PROFIT( calculateProfit(product) );
+		product.setAVERAGE_PROFIT( calculateProfitAverage() );
+		return product;
 	}
 	
 	@Override

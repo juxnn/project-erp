@@ -13,4 +13,6 @@ public class ProductVO {
 	private String PRODUCT_DETAIL;
 	
 	private String FILE_NAME;
+	private Double PRODUCT_PROFIT;
+	private Double AVERAGE_PROFIT;
 }

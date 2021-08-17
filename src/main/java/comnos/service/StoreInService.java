@@ -8,7 +8,7 @@ public interface StoreInService {
 
 	void insert(OrderVO order);
 
-	List<OrderVO> getListOrder();
+	List<OrderVO> getListOrder(int storeNo);
 
 	List<OrderVO> getList();
 

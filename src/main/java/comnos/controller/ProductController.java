@@ -57,6 +57,7 @@ public class ProductController {
 	public ResponseEntity<ProductVO> getDetail(String productNo) {
 		
 		ProductVO vo = service.get(productNo);
+		log.info(vo.getPRODUCT_PROFIT());
 		
 		return new ResponseEntity<>(vo, HttpStatus.OK);
 	}
