@@ -9,6 +9,14 @@
 
 <%@ include file="/WEB-INF/subModules/bootstrapHeader.jsp"%>
 
+<style>
+#div1{
+	margin-top: 100px;
+}
+#div2{
+	margin-top: 50px;
+}
+</style>
 <script type="text/javascript">
 function test2(empCode){
 	$("#empCode").val(empCode);
@@ -22,11 +30,10 @@ function test2(empCode){
 </head>
 
 <body>
-<ma:navbar />
+<ma:navbar-main />
 <div class="container">
-<div class="row justify-content-center">
+<div class="row justify-content-center" id="div1">
 		<div class="col-md-6 col-12">
-			<h1>로그인</h1>
 			<form action="${appRoot }/login" method="post">
 				<div class="form-group">
 					<label for="input1">사번</label>				
@@ -50,16 +57,20 @@ function test2(empCode){
 			<input class="btn btn-warning" type="submit" value="비밀번호 찾기" hidden="hidden">
 		</form>
 		</div>
-	</div>
+</div>
+<!-- 예시용 계정 -->
+<div class="row justify-content-center" id="div2" >
 	<div>
-		<div>
-			본사 관리부 부장 : 2000010193/123 <br>
-			
-			명동 영업부 부장 : 2010050592<br>
-			
-			창고 물류부 부장 : 2004061053<br>
-		</div>
+
+		본사 관리부 부장 : 2000010193<br>
+		명동 영업부 부장 : 2010050592<br>
+		명동 영업부 대리 : 2006081990<br>
+		창고 물류부 부장 : 2004061053<br>
+		창고 물류부 사원 : 2007090697<br>
+		<br>
+		비밀번호: 123
 	</div>
+</div>
 </div>
 </body>
 </html>

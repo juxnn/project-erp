@@ -55,11 +55,22 @@
   <filter-mapping>
 	<filter-name>springSecurityFilterChain</filter-name>
 	<url-pattern>/*</url-pattern>
+	<dispatcher>FORWARD</dispatcher>
+    <dispatcher>REQUEST</dispatcher>
+    <dispatcher>ERROR</dispatcher>
   </filter-mapping>
   <!-- Error Page -->
   <error-page>
     <error-code>404</error-code>
     <location>/WEB-INF/views/error/404error.jsp</location>
+  </error-page>
+  <error-page>
+    <error-code>403</error-code>
+    <location>/WEB-INF/views/error/403error.jsp</location>
+  </error-page>
+  <error-page>
+    <error-code>500</error-code>
+    <location>/WEB-INF/views/error/error.jsp</location>
   </error-page>
 </web-app>
 

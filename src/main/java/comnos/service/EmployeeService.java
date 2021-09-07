@@ -20,6 +20,7 @@ public interface EmployeeService {
 	public List<EmployeeVO> search(EmployeeVO vo);
 	public void updatePassword(EmployeeVO vo);
 	public void edit(EmployeeVO vo);
+	public void resign(EmployeeVO vo);
 
 
 }

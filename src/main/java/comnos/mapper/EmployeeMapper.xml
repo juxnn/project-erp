@@ -163,6 +163,13 @@
 			(#{EMP_CODE}, #{AUTH})
 	</insert>
 	
+	<insert id="insertResignAuth">
+		INSERT INTO EMPLOYEE_AUTH
+			(EMP_CODE, AUTH)
+		VALUES
+			(#{EMP_CODE}, 'ROLE_RESIGN')
+	</insert>
+	
 
 	<select id ="read" resultMap="employeeMap">
 		SELECT
@@ -235,6 +242,12 @@
 				EMP_ADDRESS = #{EMP_ADDRESS},
 			</if>
 			CHECK_RESIGNATION = #{CHECK_RESIGNATION}
+		WHERE EMP_CODE = #{EMP_CODE}
+	</update>
+	
+	<update id="resign">
+		UPDATE EMPLOYEE
+		SET CHECK_RESIGNATION = #{RESIGN_CODE}
 		WHERE EMP_CODE = #{EMP_CODE}
 	</update>
 

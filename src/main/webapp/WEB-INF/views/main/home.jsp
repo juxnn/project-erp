@@ -8,12 +8,24 @@
 <head>
 
 <%@ include file="/WEB-INF/subModules/bootstrapHeader.jsp"%>
+<style>
+#main-title{
+	margin-top: 100px;
+}
+</style>
 
-<meta charset="UTF-8">
 <title>Insert title here</title>
 </head>
 <body>
-<ma:navbar />
+<sec:authorize access="!isAuthenticated()">
+	<ma:navbar-main />
+</sec:authorize>
+
+<sec:authorize access="hasRole('ROLE_MASTER')">
+	<ma:navbar1 />
+	<ma:navbar-b />
+	<ma:navbar-c />
+</sec:authorize>
 
 <sec:authorize access="hasRole('ROLE_MTEAM')">
 	<ma:navbar1 />
@@ -28,7 +40,7 @@
 </sec:authorize>
 
 <div class="container">
-	<h1>메인페이지 HOME 입니다.</h1>
+	<h1 id="main-title">컴노스 물류 관리 홈페이지 입니다.</h1>
 </div>
 </body>
 </html>

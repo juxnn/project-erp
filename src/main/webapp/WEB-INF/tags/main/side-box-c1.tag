@@ -5,8 +5,8 @@
 <div class="side-box-A">
 	<div class="side-box-B">
 		<div class="side-box-name">발주관리</div>
-		<div class="side-box-content" style="cursor:pointer;" onclick="location.href='${appRoot}/store-order/list'">발주조회</div>
-		<div class="side-box-content" style="cursor:pointer;" onclick="location.href='${appRoot}/stock/out-form'">출고등록</div>
-		<div class="side-box-content" style="cursor:pointer;" onclick="location.href='${appRoot}/'">발주반려</div>
+		<div class="side-box-content" style="cursor:pointer;" onclick="location.href='${appRoot}/store-order/list'">발주 조회</div>
+		<div class="side-box-content" style="cursor:pointer;" onclick="location.href='${appRoot}/stock/out-form'">출고 등록</div>
+		<div class="side-box-content" style="cursor:pointer;" onclick="location.href='${appRoot}/stock/out-list'">출고 목록</div>
 	</div>
 </div>

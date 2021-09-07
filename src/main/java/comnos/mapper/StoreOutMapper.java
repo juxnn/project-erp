@@ -12,4 +12,6 @@ public interface StoreOutMapper {
 
 	int checkOrderNo(String ORDER_NO);
 
+	List<OrderVO> getDetail(String ono);
+
 }

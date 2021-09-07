@@ -139,6 +139,37 @@ $(document).ready(function(){
 		$('#employee-detail-modal').modal('show');
 
 	})
+	
+	
+	
+	$("#resign-btn").click(function(){
+	
+		var empCode = $("#modify-emp-code").val();
+		console.log(empCode);
+		var data = {EMP_CODE: empCode};
+		var request = $.ajax({
+			type: "post",
+			url: "${appRoot}/employee/resign",
+			data: data,
+			success: function(data){
+				console.log("성공");
+			},
+			error: function(){
+				console.log("실패");
+			}
+		})
+		
+		request.done(function(data){
+		
+			alert("퇴사처리 되었습니다.");
+			
+		})
+		
+		
+		
+	})
+	
+	
 })
 
 

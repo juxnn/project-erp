@@ -47,6 +47,7 @@ html, body{
 }
 .container{
 	margin-top: 50px;
+	max-width: 800px;
 }
 .title-box {
 	text-align: center;
@@ -63,8 +64,8 @@ $(document).ready(function(){
 	$("#product-add-btn").click(function(){
 		var html ="";
 		
-		html += "<tr>";
-		html += "<td>";
+		html += "<tr class='d-flex'>";
+		html += "<td class='col-3'>";
 		html += "<select id='product-type-select' onchange='changeTypeSelect(this)'>";
 		html += "<option value=''>상품 TYPE</option>";
 		html += "<c:forEach items='${productTypeList }' var='type'>";
@@ -72,12 +73,13 @@ $(document).ready(function(){
 		html += "</c:forEach>";
 		html += "</select>";
 		html += "</td>";
-		html += "<td>";
-		html += "<select class='product-product-select' name='products'>";
+		html += "<td class='col-7'>";
+		html += "<select class='product-product-select' name='products' style='width:100%'>";
 		html += "<option value=''>타입을 먼저 선택하세요.</option>"
 		html += "</select>";
 		html += "</td>";
-		html += "<td><input type='number' name='ORDER_EA'></td>";
+		html += "<td class='col-2'><input type='number' name='ORDER_EA'"
+				+ "onchange='this.value = Math.floor(Math.max(this.value,1))' style='width:50px'></td>";
 		html += "</tr>";
 
 		$("#product-table-body").append(html);
@@ -152,7 +154,10 @@ function getToday(){
 
 </head>
 <body>
-<ma:navbar />
+<sec:authorize access="hasRole('ROLE_MASTER')">
+	<ma:navbar1 />
+	<ma:navbar-b />
+</sec:authorize>
 <ma:navbar-c />
 <div class="box">
 <!-- ********************************* 사이드 박스 ********************************* -->
@@ -168,20 +173,20 @@ function getToday(){
 			<thead>
 			</thead>
 			<tbody id="product-table-body">
-				<tr>
-					<td>사원코드: ${pinfo.employee.EMP_CODE }
+				<tr class="d-flex">
+					<td class="col-3">사원코드: ${pinfo.employee.EMP_CODE }
 						<input type="number" name='EMP_CODE' readonly="readonly" value="${employee.EMP_CODE }" hidden>
 					</td>
-					<td>발주자: ${pinfo.employee.EMP_NAME }</td>
-					<td id="today-date"></td>
+					<td class="col-7">발주자: ${pinfo.employee.EMP_NAME }</td>
+					<td class="col-2" id="today-date"></td>
 				</tr>
-				<tr>
-					<th>타입</th>
-					<th>상품명</th>
-					<th>수량</th>
+				<tr class="d-flex">
+					<th class="col-3">타입</th>
+					<th class="col-7">상품명</th>
+					<th class="col-2">수량</th>
 				</tr>
-				<tr>
-					<td>
+				<tr class="d-flex">
+					<td class="col-3">
 						<select id="product-type-select" onchange="changeTypeSelect(this)">
 							<option value="">상품 TYPE</option>
 							<c:forEach items="${productTypeList }" var="type">
@@ -189,12 +194,12 @@ function getToday(){
 							</c:forEach>	
 						</select>
 					</td>
-					<td>
-						<select class="product-product-select" name='products'>
+					<td class="col-7">
+						<select class="product-product-select" name='products' style='width:100%'>
 							<option value="">타입을 먼저 선택하세요</option>
 						</select>	
 					</td>
-					<td><input type='number' name='ORDER_EA'> </td>
+					<td class="col-2"><input type='number' name='ORDER_EA' onchange='this.value = Math.floor(Math.max(this.value,1))' style="width:50px"> </td>
 				</tr>
 			</tbody>
 		</table>

@@ -1,6 +1,7 @@
 package comnos.controller;
 
 import java.security.Principal;
+import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.http.HttpStatus;
@@ -12,6 +13,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import comnos.domain.Criteria;
 import comnos.domain.EmployeeVO;
@@ -117,6 +119,17 @@ public class StockController {
 		
 	}
 	
+	@PostMapping("/out-list-detail")
+	public ResponseEntity<List<OrderVO>> getOutListDetail(String ono) {
+		
+		List<OrderVO> order = storeOutService.getDetail(ono);
+		
+		return new ResponseEntity<>(order, HttpStatus.OK);
+		
+	}
+	
+	
+	
 	
 	
 	@PostMapping("/in-submit")
@@ -138,7 +151,7 @@ public class StockController {
 
 			StockVO stock = new StockVO();
 			stock.setPRODUCT_NO(products[i]);
-			stock.setSTORE_NO(order.getSTORE_NO());	//여기서 문제가 생기고있다.
+			stock.setSTORE_NO(order.getSTORE_NO());
 			
 			int existEA = service.countEA(stock);		//기존 재고 COUNT
 			int updateEA = existEA + inEA[i];
@@ -185,18 +198,36 @@ public class StockController {
 	
 	@PostMapping("/out-submit")
 	@Transactional
-	public void submitOutOrder(OrderVO order, Principal principal) {
+	public ResponseEntity<String> submitOutOrder(@RequestParam("products[]") String[] products, @RequestParam("outEA[]") int[] outEA, OrderVO order, Principal principal) {
+
+		log.info(Arrays.toString(products));
+		log.info(Arrays.toString(outEA));
 		
 		long empCode = Long.parseLong( principal.getName() );
 		
 		int number = 1;
 		String ono = computeService.mimeOrderNumberC(number);
-
 		order.setORDER_NO(ono);
 		order.setEMP_CODE(empCode);
-		order.setSTORE_NO(order.getSTORE_NO());
 		
-		storeOutService.addStoreOutOrder(order);
+		for(int i=0; i<products.length; i++) {
+			order.setPRODUCT_NO(products[i]);
+			order.setORDER_EA(outEA[i]);
+			storeOutService.addStoreOutOrder(order);				//입고서 작성
+
+			StockVO stock = new StockVO();
+			stock.setPRODUCT_NO(products[i]);
+			stock.setSTORE_NO(order.getSTORE_NO());
+			
+			int existEA = service.countEA(stock);		//기존 재고 COUNT
+			int updateEA = existEA - outEA[i];
+			
+			stock.setSTORE_STOCK_EA(updateEA);
+			service.update(stock);				//창고재고에 빼준다.
+		}
+		
+		return new ResponseEntity<>(HttpStatus.OK);
+//		storeOutService.addStoreOutOrder(order);
 	}
 	
 	@PostMapping("/complete-order")

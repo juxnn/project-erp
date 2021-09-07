@@ -9,5 +9,7 @@ public interface StoreOutService {
 	void addStoreOutOrder(OrderVO order);
 
 	List<OrderVO> getList();
+	
+	List<OrderVO> getDetail(String ono);
 
 }

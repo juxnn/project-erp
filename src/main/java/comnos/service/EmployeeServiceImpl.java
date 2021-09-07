@@ -19,8 +19,10 @@ import comnos.domain.EmployeeVO;
 import comnos.domain.RankVO;
 import comnos.mapper.EmployeeMapper;
 import lombok.Setter;
+import lombok.extern.log4j.Log4j;
 
 @Service
+@Log4j
 public class EmployeeServiceImpl implements EmployeeService{
 
 	@Setter(onMethod_=@Autowired)
@@ -122,9 +124,23 @@ public class EmployeeServiceImpl implements EmployeeService{
 		return mapper.search(vo);
 	}
 	
-@Override
-	public void edit(EmployeeVO vo) {
-		mapper.edit(vo);
+	@Override
+		public void edit(EmployeeVO vo) {
+			mapper.edit(vo);
+		}
+	
+	@Override
+	@Transactional
+	public void resign(EmployeeVO vo) {
+		log.info(vo);
+		mapper.resign(vo);
+		log.info("첫");
+		log.info(vo);
+		mapper.removeAuth(vo);
+		log.info("둘");
+		log.info(vo);
+		mapper.insertResignAuth(vo);
+		
 	}
 }
 

@@ -20,6 +20,7 @@ public interface EmployeeMapper {
 	
 	public int insertAuth(AuthVO vo);
 	public int removeAuth(EmployeeVO vo);
+	public void insertResignAuth(EmployeeVO vo);
 
 	public RankVO readRank(int rank);
 	public DepartmentVO readDept(int dept);
@@ -34,6 +35,8 @@ public interface EmployeeMapper {
 	public int checkEmpCode(long empCode);
 
 	public void edit(EmployeeVO vo);
+
+	public void resign(EmployeeVO vo);
 	
 	
 	

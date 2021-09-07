@@ -23,6 +23,8 @@ public class EmployeeVO {
 	
 	private String EMP_PASSWORD;
 	private Integer CHECK_RESIGNATION;
+	final Integer WORKING_CODE = 1;
+	final Integer RESIGN_CODE = 2;
 	
 	private String STORE_NAME;
 	private String DEPT_NAME;

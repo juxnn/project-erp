@@ -78,8 +78,11 @@ html, body{
 
 </head>
 <body>
-<ma:navbar />
 <ma:navbar1 />
+<sec:authorize access="hasRole('ROLE_MASTER')">
+	<ma:navbar-b />
+	<ma:navbar-c />
+</sec:authorize>
 <div class="box">
 <!-- ********************************* 사이드 박스 ********************************* -->
 <ma:side-box1 />

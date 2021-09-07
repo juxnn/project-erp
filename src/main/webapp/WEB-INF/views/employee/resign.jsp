@@ -10,7 +10,7 @@
 <html>
 <head>
 
-<%@ include file="/WEB-INF/subModules/employee-list-script.jsp"%>
+<%@ include file="/WEB-INF/subModules/employee-resign-script.jsp"%>
 <%@ include file="/WEB-INF/subModules/bootstrapHeader.jsp"%>
 
 <title>Insert title here</title>
@@ -78,7 +78,6 @@ html, body{
 
 </head>
 <body>
-<ma:navbar />
 <ma:navbar1 />
 
 <div class="box">

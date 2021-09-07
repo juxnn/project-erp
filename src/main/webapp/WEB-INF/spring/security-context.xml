@@ -12,9 +12,9 @@
 	class="comnos.security.CustomUserDetailsService"></bean>
 
 	<security:http>
-<!-- 	
- 		<security:intercept-url pattern="/employee/register" access="hasRole('ROLE_GM')"/>
- -->	
+ 	
+ 		<security:intercept-url pattern="/main/home" access="hasAnyRole('ROLE_MASTER', 'ROLE_MTEAM', 'ROLE_STEAM', 'ROLE_LTEAM')"/>
+
  		<security:form-login login-page="/employee/login" default-target-url="/main/home" />
 		<security:logout logout-success-url="/main/home"/>
 		<security:csrf disabled="true"/>

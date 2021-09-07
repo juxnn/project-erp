@@ -15,12 +15,6 @@ public class CustomUser extends User{
 	@Setter
 	private EmployeeVO employee;
 	
-	/*
-	public CustomUser(Long EMP_CODE, String EMP_PASSWORD, Collection<? extends GrantedAuthority> authorities) {
-		super(EMP_CODE.toString(), EMP_PASSWORD, authorities);
-	}
-	*/
-
 	public CustomUser(EmployeeVO vo) {
 		
 		super(vo.getEMP_CODE() + "", vo.getEMP_PASSWORD(), vo.getAUTH_LIST().stream()

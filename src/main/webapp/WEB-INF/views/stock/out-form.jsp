@@ -58,7 +58,10 @@ html, body{
 </style>
 </head>
 <body>
-<ma:navbar />
+<sec:authorize access="hasRole('ROLE_MASTER')">
+	<ma:navbar1 />
+	<ma:navbar-b />
+</sec:authorize>
 <ma:navbar-c />
 <div class="box">
 <!-- ********************************* 사이드 박스 ********************************* -->
@@ -249,12 +252,6 @@ html, body{
 		    </tr>
 		  </tbody>
 		</table>
-		
-		
-		
-		
-		
-			
 				<table class="table table-striped">
 					<thead>
 						<tr>
@@ -289,6 +286,5 @@ html, body{
 	
 	
 </div>	
-</div>
 </body>
 </html>

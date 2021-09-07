@@ -12,6 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import comnos.domain.EmployeeVO;
 import comnos.domain.OrderVO;
@@ -57,7 +58,15 @@ public class StoreOrderController {
 	
 	@PostMapping("/order")
 	@Transactional
-	public String addOrder(OrderVO order, String[] products, int[] ORDER_EA) {
+	public String addOrder(OrderVO order, String[] products, int[] ORDER_EA, RedirectAttributes rttr) {
+		
+		//발주수량 유효성 검사(상품의 발주량이 0개인 경우가 있으면 에러 메세지처리)
+		for(int i=0; i<products.length; i++) {
+			if(ORDER_EA[i] == 0) {
+				rttr.addFlashAttribute("message", "수량이 0개인 상품이 있습니다.");
+				return "redirect:/store-order/order";
+			}
+		}
 		
 		int number = 1;
 		//주문번호 채번 서비스 (B01)번부터 시작		
@@ -65,19 +74,20 @@ public class StoreOrderController {
 		order.setORDER_NO(ono);
 		
 		for(int i=0; i<products.length; i++) {
-
 			order.setPRODUCT_NO( products[i] );
-			order.setORDER_EA( ORDER_EA[i] );		
+			order.setORDER_EA( ORDER_EA[i] );
 			service.addOrder(order);	//내부 발주서 작성
 		}
+		rttr.addFlashAttribute("message", "발주서 제출이 되었습니다.");
 		return "redirect:/store-order/list";
 	}
 	
 	
 	@GetMapping("/list")
-	public void getInOrderList(Model model) {
+	public void getInOrderList(Model model, RedirectAttributes rttr) {
 		List<OrderVO> list = service.getOrderList();
 		model.addAttribute("list", list);	
+//		model.addAttribute("message", rttr.getFlashAttributes().get("message"));
 	}
 	
 	@PostMapping("/detail")

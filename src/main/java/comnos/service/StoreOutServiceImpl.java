@@ -24,4 +24,9 @@ public class StoreOutServiceImpl implements StoreOutService{
 	public List<OrderVO> getList() {
 		return mapper.getList();
 	}
+	
+	@Override
+	public List<OrderVO> getDetail(String ono) {
+		return mapper.getDetail(ono);
+	}
 }

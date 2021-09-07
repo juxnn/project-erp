@@ -14,6 +14,9 @@
 
 <script>
 $(document).ready(function(){
+	if('${message }'){
+		alert('${message}');
+	}
 	
 	//해당하는 table 클릭하면 모달 실행
 	$(".order-list").click(function(){
@@ -113,7 +116,7 @@ html, body{
 }
 
 .side-box-content {
-	height: 100%;
+	height: 70px;
 	font-size: 20px;
 	padding: 15px;
 	border-top-color: #C0C0C0;
@@ -129,11 +132,20 @@ html, body{
 	text-align: center;
 	margin-bottom: 50px;
 }
+.not-message{
+	margin-top: 20px;
+	text-align: center;
+	color: red;
+}
 </style>
 
 </head>
 <body>
-<ma:navbar />
+<sec:authorize access="hasRole('ROLE_MASTER')">
+	<ma:navbar1 />
+	<ma:navbar-b />
+	<ma:navbar-c />
+</sec:authorize>
 <sec:authorize access="hasRole('ROLE_STEAM')">
 	<ma:navbar-b />
 </sec:authorize>
@@ -142,6 +154,10 @@ html, body{
 </sec:authorize>
 <div class="box">
 <!-- ********************************* 사이드 박스 ********************************* -->
+<sec:authorize access="hasRole('ROLE_MASTER')">
+	<ma:side-box-d1 />
+</sec:authorize>
+
 <sec:authorize access="hasRole('ROLE_STEAM')">
 	<ma:side-box-b1 />
 </sec:authorize>
@@ -231,13 +247,18 @@ html, body{
 		</div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
         <sec:authorize access="hasRole('ROLE_LTEAM')">
 	        <form id="order-confirm-form" method="post" action="${appRoot}/store-order/status-update">
 	        	<input id="order-confirm-value" type="text" readonly="readonly" name="ORDER_NO" hidden>
 	        	<input id="order-status-change" type="number" value="1" readonly="readonly" name="ORDER_STATUS" hidden>
-		    	<button id="order-refuse-btn" type="button" class="btn btn-warning" hidden>발주 반려</button>
-		        <button id="order-confirm-btn" type="submit" class="btn btn-primary" hidden>발주 승인</button>
+	        	
+	        	<sec:authorize access="!hasAnyRole('ROLE_AM', 'ROLE_ST')">
+			    	<button id="order-refuse-btn" type="button" class="btn btn-warning" hidden>발주 반려</button>
+			        <button id="order-confirm-btn" type="submit" class="btn btn-primary" hidden>발주 승인</button>	        	
+	        	</sec:authorize>
+		        <sec:authorize access="hasAnyRole('ROLE_AM', 'ROLE_ST')">
+			    	<div class="not-message">대리, 사원은 발주서를 작성할 직급이 아닙니다.</div>      	
+	        	</sec:authorize>
 	        </form>
         </sec:authorize>
       </div>

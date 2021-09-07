@@ -149,8 +149,11 @@ function mapAddress(storeAddress){
 <title>Insert title here</title>
 </head>
 <body>
-<ma:navbar />
 <ma:navbar1 />
+<sec:authorize access="hasRole('ROLE_MASTER')">
+	<ma:navbar-b />
+	<ma:navbar-c />
+</sec:authorize>
 <div class="box">
 <!-- ********************************* 사이드 박스 ********************************* -->
 <ma:side-box2 />
@@ -220,7 +223,6 @@ function mapAddress(storeAddress){
       <!-- 지도 -->
 	  <div id="map"></div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-warning">정보 수정</button>
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
       </div>
     </div>

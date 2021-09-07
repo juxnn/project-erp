@@ -51,7 +51,7 @@ function searchEmployee(){
 				EMP_CODE: code,
 				MIN_DATE: minDate,
 				MAX_DATE: maxDate,
-				CHECK_RESIGNATION: 1};
+				CHECK_RESIGNATION: 2};
 	
 	console.log(data);
 	var employeeList = "";

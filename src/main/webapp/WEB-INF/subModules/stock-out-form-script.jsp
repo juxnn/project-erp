@@ -75,8 +75,7 @@ $(document).ready(function(){
 		var ono = $(this).val()
 		checkStoreOrder(ono);
 	})
-	
-	
+
 	
 })
 //검색에서 옵션 값이 바뀌면 그 값을 가져오는 함수
@@ -161,15 +160,13 @@ function removeCheckboxValue(){
 	})
 }
 
-//모달-출고서 제출 버튼시.
-//작성중이었음 7/23(금) 새벽에...
-//배열에 어떻게 추가하면 될까?
 function submitCheckboxValue(){
 	var chkbox = $('input:checkbox[name=out-product]:checked');
 	
 	var pnoArray = new Array();
 	var peaArray = new Array();
-	var STORE_NO = $('#store-order-value').val();
+	var STORE_NO = $('#store-select').val();
+	console.log(STORE_NO);
 	
 	chkbox.each(function(i){
 		var tr = chkbox.parent().parent().eq(i);
@@ -180,14 +177,11 @@ function submitCheckboxValue(){
 		
 		pnoArray.push(pno);
 		peaArray.push(pea);
-
-		
+	
 	})
 	
-	for(i=0; i<pnoArray.length; i++){
-		
-		var data = { PRODUCT_NO: pnoArray[i],
-					 ORDER_EA: peaArray[i],
+		var data = { products: pnoArray,
+					 outEA: peaArray,
 					 STORE_NO: STORE_NO};
 	
 		//ajax수정해야함
@@ -201,8 +195,8 @@ function submitCheckboxValue(){
 			error:function(){
 				console.log("실패");
 			}
-		});//ajax의 끝	
-	}	//for문의 끝
+		});
+//	}
 	
 	alert("제출되었습니다.");
 }
@@ -277,31 +271,3 @@ function getToday(){
 	return year + "-" + month + "-" + day;
 }
 </script>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

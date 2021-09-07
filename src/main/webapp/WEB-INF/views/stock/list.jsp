@@ -111,8 +111,13 @@ function searchStock(){
 
 </head>
 <body>
-<ma:navbar />
+<sec:authorize access="hasRole('ROLE_MASTER')">
+	<ma:navbar1 />
+</sec:authorize>
 <ma:navbar-b />
+<sec:authorize access="hasRole('ROLE_MASTER')">
+	<ma:navbar-c />
+</sec:authorize>
 <div class="box">
 <!-- ********************************* 사이드 박스 ********************************* -->
 <ma:side-box-b2 />

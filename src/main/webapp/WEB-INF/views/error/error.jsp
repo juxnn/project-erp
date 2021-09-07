@@ -10,10 +10,19 @@
 
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<style>
+.container{
+	margin-top: 80px;
+	width: 800px;
+	background-color: blue;
+	color: white; 
+}
+</style>
 </head>
 <body>
 <div class="container">
-<h1>에러 발생</h1>
+<h1>에러 발생 페이지입니다.</h1>
+<p>내용을 다시 확인해주세요.</p>
 <%--
 	<h4><c:out value="${exception.getMessage() }"></c:out></h4>
 	<ul>

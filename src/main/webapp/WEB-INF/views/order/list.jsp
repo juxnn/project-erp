@@ -135,7 +135,10 @@ $(document).ready(function(){
 
 </head>
 <body>
-<ma:navbar />
+<sec:authorize access="hasRole('ROLE_MASTER')">
+	<ma:navbar1 />
+	<ma:navbar-b />
+</sec:authorize>
 <ma:navbar-c />
 <div class="box">
 <!-- ********************************* 사이드 박스 ********************************* -->
@@ -198,10 +201,6 @@ $(document).ready(function(){
 				<tr>
 					<td>처리상태</td>
 					<td id="order-detail-status"></td>
-				</tr>
-				<tr>
-					<td>총 가격</td>
-					<td id="order-detail-totalCost"></td>
 				</tr>
 			</tbody>
 		</table>

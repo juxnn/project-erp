@@ -150,8 +150,11 @@ html, body{
 
 </head>
 <body>
-<ma:navbar />
 <ma:navbar1 />
+<sec:authorize access="hasRole('ROLE_MASTER')">
+	<ma:navbar-b />
+	<ma:navbar-c />
+</sec:authorize>
 <div class="box">
 <!-- ********************************* 사이드 박스 ********************************* -->
 <ma:side-box3 />
@@ -225,7 +228,7 @@ html, body{
 		    <tr>
 		      <td colspan="2">
 		   
-				<canvas id="bar-chart" width="200" height="30"></canvas>
+				<canvas id="bar-chart" width="200" height="50"></canvas>
 		      
 		      </td>
 		    </tr>
@@ -235,7 +238,6 @@ html, body{
       <!-- 지도 -->
 	  <div id="map" hidden="hidden"></div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-warning">정보 수정</button>
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
       </div>
     </div>

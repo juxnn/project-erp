@@ -31,7 +31,7 @@ $(document).ready(function(){
 		html += "</select>";
 		html += "</td>";
 		html += "<td class='col-2'><input type='number' name='ORDER_EA'"
-		+ "onchange='this.value = Math.floor(Math.max(this.value,1))' style='width:50px'></td>";
+		+ "onchange='this.value = Math.floor(Math.max(this.value,1))' style='width:50px' value='1'></td>";
 		html += "</tr>";
 
 		$("#product-table-body").append(html);
@@ -146,13 +146,23 @@ html, body{
 	align-content: center;
 	justify-content: center;
 }
+.not-message{
+	margin-top: 20px;
+	text-align: center;
+	color: red;
+}
 
 </style>
 
 </head>
 <body>
-<ma:navbar />
+<sec:authorize access="hasRole('ROLE_MASTER')">
+	<ma:navbar1 />
+</sec:authorize>
 <ma:navbar-b />
+<sec:authorize access="hasRole('ROLE_MASTER')">
+	<ma:navbar-c />
+</sec:authorize>
 <div class="box">
 <!-- ********************************* 사이드 박스 ********************************* -->
 <ma:side-box-b1 />
@@ -202,17 +212,23 @@ html, body{
 					</select>
 				</td>
 				<td class="col-2">
-					<input type='number' name='ORDER_EA' onchange='this.value = Math.floor(Math.max(this.value,1))' style="width:50px">
+					<input type='number' name='ORDER_EA' onchange='this.value = Math.floor(Math.max(this.value,1))' style="width:50px" value="1">
 				</td>
 			</tr>
 		</tbody>
 	</table>
-	<button id="product-add-btn" type="button">상품 추가하기</button>
-	<input type="number" value="${employee.STORE_NO }" hidden>
-	<input type="number" name="EMP_CODE" value="${employee.EMP_CODE }" hidden>
-	<button type="submit">제출</button>
+	<button id="product-add-btn" type="button" class="btn btn-secondary" >상품 추가하기</button>
+	<input type="number" name="STORE_NO" value="${employee.STORE_NO }" hidden="hidden">
+	<input type="number" name="EMP_CODE" value="${employee.EMP_CODE }" hidden="hidden">
+	
+	<sec:authorize access="!hasAnyRole('ROLE_AM', 'ROLE_ST')">
+		<button class="btn btn-primary" type="submit">제출</button>
+	</sec:authorize>
+	<sec:authorize access="hasAnyRole('ROLE_AM', 'ROLE_ST')">
+		<div class="not-message">대리, 사원은 발주서를 작성할 직급이 아닙니다.</div>
+	</sec:authorize>
 </form>
-		</div>    
+</div>    
 
 </div><!-- .box -->
 </body>

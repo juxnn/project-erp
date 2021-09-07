@@ -12,8 +12,12 @@
 
 <title>Insert title here</title>
 <style>
+html, body{
+	height: 100%;
+}
 .box {
 	display: flex;
+	height: 100%;
 }
 .side-box-A {
 	background-color: white;
@@ -121,8 +125,13 @@ $(function(){
 </script>
 </head>
 <body>
-<ma:navbar />
+<sec:authorize access="hasRole('ROLE_MASTER')">
+	<ma:navbar1 />
+</sec:authorize>
 <ma:navbar-b />
+<sec:authorize access="hasRole('ROLE_MASTER')">
+	<ma:navbar-c />
+</sec:authorize>
 <div class="box">
 <!-- ********************************* 사이드 박스 ********************************* -->
 <ma:side-box-b2 />
@@ -219,10 +228,6 @@ $(function(){
 				<tr>
 					<td>담당자 </td>
 					<td id="order-detail-emp"></td>
-				</tr>
-				<tr>
-					<td>총 가격</td>
-					<td id="order-detail-totalCost"></td>
 				</tr>
 			</tbody>
 		</table>

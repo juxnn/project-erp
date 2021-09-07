@@ -77,8 +77,12 @@ html, body{
 
 </head>
 <body>
-<ma:navbar />
 <ma:navbar1 />
+<sec:authorize access="hasRole('ROLE_MASTER')">
+	<ma:navbar-b />
+	<ma:navbar-c />
+</sec:authorize>
+
 
 <div class="box">
 <!-- ********************************* 사이드 박스 ********************************* -->
@@ -239,11 +243,13 @@ html, body{
 		</table>
       </div>
       <div class="modal-footer">
+      	
       	<form action="${appRoot }/employee/modify" method="post">
-      		<input id="modify-emp-code" type="number" name=empCode hidden>
+      		<input id="modify-emp-code" type="number" name=empCode hidden="hidden">
 	        <button type="submit" id="modify-btn" class="btn btn-warning">정보 수정</button>  	
       	</form>
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      	<button type="button" id="resign-btn" class="btn btn-dark">퇴사처리</button>
+        <!-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button> -->
       </div>
     </div>
   </div>
